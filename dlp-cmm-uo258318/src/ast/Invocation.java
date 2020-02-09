@@ -26,7 +26,7 @@ public class Invocation extends AbstractExpression implements Statement {
 	}
 
 	public List<Expression> getParams() {
-		return params;
+		return new ArrayList<Expression>(params);
 	}
 
 }
