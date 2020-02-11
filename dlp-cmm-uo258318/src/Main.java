@@ -22,17 +22,17 @@ public class Main {
 			// We get the semantic value of the token
 			Object semanticValue = null;
 			switch (token.getType()) {
-				case CmmLexer.CHAR_CONSTANT:
-					semanticValue = LexerHelper.lexemeToChar(token.getText());
-					break;
-				case CmmLexer.REAL_CONSTANT:
-					semanticValue = LexerHelper.lexemeToReal(token.getText());
-					break;
-				case CmmLexer.INT_CONSTANT:
-					semanticValue = LexerHelper.lexemeToInt(token.getText());
-					break;
-				default:
-					semanticValue = token.getText();
+			case CmmLexer.CHAR_CONSTANT:
+				semanticValue = LexerHelper.lexemeToChar(token.getText());
+				break;
+			case CmmLexer.REAL_CONSTANT:
+				semanticValue = LexerHelper.lexemeToReal(token.getText());
+				break;
+			case CmmLexer.INT_CONSTANT:
+				semanticValue = LexerHelper.lexemeToInt(token.getText());
+				break;
+			default:
+				semanticValue = token.getText();
 			}
 			// We show the token information
 			System.out.printf("Line: %d, column: %d, lexeme: '%s', token: %s, semantic value: %s.\n", token.getLine(),
