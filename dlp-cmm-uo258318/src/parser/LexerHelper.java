@@ -12,35 +12,30 @@ public class LexerHelper {
 	}
 
 	public static char lexemeToChar(String str) {
-
 		if (str.length() == 3) {
 			return str.charAt(1);
 		} else if (str.length() == 4) {
 			return isTabOrNewLine(str);
 		} else if (str.length() > 0) {
 			String resultingString = "";
-
 			for (int i = 2; i < str.length() - 1; i++) {
 				if (Character.isDigit(str.charAt(i))) {
 					resultingString += str.charAt(i);
 				} else {
-					throw new RuntimeException();
+					return 0;
 				}
 			}
-
 			int asciiCode = Integer.parseInt(resultingString);
 			return (char) asciiCode;
 		}
-
 		return 0;
 	}
 
 	private static char isTabOrNewLine(String s) {
-		System.out.println(s);
-		if (s.equals("\n")) {
-			return '\'' + '\\' + 'n' + '\'';
-		} else if (s.equals("\t")) {
-			return '\'' + '\\' + 't' + '\'';
+		if (s.charAt(2) == 'n') {
+			return '\n';
+		} else if (s.charAt(2) == 't') {
+			return '\t';
 		}
 		return 0;
 	}
@@ -51,7 +46,6 @@ public class LexerHelper {
 		} catch (NumberFormatException e) {
 			System.out.println(e);
 		}
-
 		return -1;
 	}
 
