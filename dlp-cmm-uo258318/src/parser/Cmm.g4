@@ -1,7 +1,72 @@
 grammar Cmm;	
 
-program: 
+/* SYNTAX RULES */
+
+program: definition+
        ;
+       
+/* DEFINITIONS */
+
+definition: ('void' | type) ID '(' (type ID (',' type ID)*)? ')' '{' var_definition* statement* '}'
+		  | var_definition
+		  ;
+		  
+var_definition: type ID (',' ID)* ';'
+			  ;
+       
+/* STATEMENTS */
+
+statement: expression '=' expression ';'
+		 | 'if' '(' expression ')' block ('else' block)?
+		 | 'while' '(' expression ')' block
+		 | 'return' expression ';'
+		 | 'read' expression (',' expression)* ';'		 
+		 | 'write' expression (',' expression)* ';'		 
+		 | ID '(' arguments ')' ';'
+		 ;
+	
+/* BLOCK */
+	 
+block: statement
+	 | '{' statement* '}'
+	 ;       
+       
+/* EXPRESSIONS */
+
+expression: '(' expression ')'
+		  | '(' ('int'|'double'|'char') ')' expression 
+		  | expression '[' expression ']'
+		  | '-' expression
+		  | expression '.' ID
+		  | ID '(' arguments ')'
+		  | expression ('*'|'/'|'%') expression
+		  | expression ('+'|'-') expression
+		  | expression ('>'|'<'|'>='|'<='|'=='|'!=') expression
+		  | expression ('&&'|'||') expression
+		  | '!' expression
+		  | ID
+		  | INT_CONSTANT
+		  | REAL_CONSTANT
+		  | CHAR_CONSTANT
+		  ;
+		  
+/* ARGUMENTS */
+		  
+arguments: (expression (',' expression)?)*
+		 ;
+		 
+/* TYPES */
+
+type: 'struct' '{' (type ID (',' ID)* ';')+ '}'
+	| type '[' expression ']' ('[' expression ']')*
+	| 'char'
+	| 'int'
+	| 'double'
+	;
+      
+       
+       
+/* LEX RULES */
        
 fragment
 DIGIT: [0-9]

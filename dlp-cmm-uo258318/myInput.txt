@@ -1,0 +1,9 @@
+if (a > b) {
+	return 'F';
+} else {
+	if (b > c) write 'D';
+	if (b < c) write 'C';
+	while (b < c) {
+		b = b + 1;
+	}
+}
