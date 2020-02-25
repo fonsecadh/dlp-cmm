@@ -8,8 +8,9 @@ public class Conditional extends AbstractExpression {
 	private Expression right;
 
 	// Constructor
-	public Conditional(int line, int column, Expression left, Expression right) {
+	public Conditional(int line, int column, String operator, Expression left, Expression right) {
 		super(line, column);
+		this.operator = operator;
 		this.left = left;
 		this.right = right;
 	}

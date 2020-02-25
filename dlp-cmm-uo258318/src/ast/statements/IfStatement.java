@@ -11,11 +11,16 @@ public class IfStatement extends AbstractStatement {
 	private Expression condition;
 	private List<Statement> ifPart;
 	private List<Statement> elsePart;
-
-	public IfStatement(int line, int column, Expression condition, List<Statement> ifPart, List<Statement> elsePart) {
+	
+	public IfStatement(int line, int column, Expression condition, List<Statement> ifPart) {
 		super(line, column);
 		this.condition = condition;
 		this.ifPart = new ArrayList<Statement>(ifPart);
+		this.elsePart = new ArrayList<Statement>(elsePart);
+	}
+
+	public IfStatement(int line, int column, Expression condition, List<Statement> ifPart, List<Statement> elsePart) {
+		this(line, column, condition, ifPart);
 		this.elsePart = new ArrayList<Statement>(elsePart);
 	}
 
@@ -29,6 +34,10 @@ public class IfStatement extends AbstractStatement {
 
 	public List<Statement> getElsePart() {
 		return new ArrayList<Statement>(elsePart);
+	}
+	
+	public void setElsePart(List<Statement> elsePart) {
+		this.elsePart = new ArrayList<Statement>(elsePart);
 	}
 
 }

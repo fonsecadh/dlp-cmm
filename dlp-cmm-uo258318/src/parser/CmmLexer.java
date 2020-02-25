@@ -1,5 +1,15 @@
 // Generated from src/parser/Cmm.g4 by ANTLR 4.8
 package parser;
+
+	import ast.*;
+	import ast.definitions.*;
+	import ast.expressions.*;
+	import ast.nodes.*;
+	import ast.statements.*;
+	import ast.types.*;
+	
+	import java.util.*;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

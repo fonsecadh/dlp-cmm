@@ -6,4 +6,6 @@ public interface Type extends ASTNode {
 	
 	String getName();
 
+	boolean isArrayType();
+
 }

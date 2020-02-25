@@ -8,8 +8,9 @@ public class Comparator extends AbstractExpression {
 	private Expression right;
 
 	// Constructor
-	public Comparator(int line, int column, Expression left, Expression right) {
+	public Comparator(int line, int column, String operator, Expression left, Expression right) {
 		super(line, column);
+		this.operator = operator;
 		this.left = left;
 		this.right = right;
 	}

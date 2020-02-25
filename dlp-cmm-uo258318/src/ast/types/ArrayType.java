@@ -38,5 +38,18 @@ public class ArrayType extends AbstractType {
 	public int getColumn() {
 		return column;
 	}
+	
+	@Override
+	public boolean isArrayType() {
+		return true;
+	}
+	
+	public void setTypeOfElements(Type of) {
+		if (this.of.isArrayType()) {
+			((ArrayType) this.of).setTypeOfElements(of);
+		} else {
+			this.of = of;
+		}
+	}
 
 }
