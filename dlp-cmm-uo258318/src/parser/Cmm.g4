@@ -40,7 +40,7 @@ definition returns [List<Definition> ast = new ArrayList<Definition>()]:
 			  	)); }
 		  	)*)? ')'
 		  	{ List<Statement> theBody = new ArrayList<Statement>(); }
-		  	'{' (var_definition { theBody.addAll($var_definition.ast); })* (statement { theBody.add($statement.ast); })* '}'
+		  	'{' (var_definition { theBody.addAll($var_definition.ast); })* (statement { theBody.addAll($statement.ast); })* '}'
 		  	{ $ast.add(new FuncDefinition(
 		  			$id.getLine(),
 		   			$id.getCharPositionInLine() + 1,
@@ -72,75 +72,75 @@ var_definition returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()
        
 /* STATEMENTS */
 
-statement returns [Statement ast]: 
+statement returns [List<Statement> ast = new ArrayList<Statement>()]: 
 		 e1=expression '=' e2=expression ';'
-		 	{ $ast = new Assignment(
+		 	{ $ast.add(new Assignment(
 				 	$e1.start.getLine(),	
 			 		$e1.start.getCharPositionInLine() + 1,
 		 			$e1.ast, $e2.ast	 		
-	 		); }	
+	 		)); }	
 		 | iftkn='if' '(' expression ')' b1=block 
-		 	{ $ast = new IfStatement(
+		 	{ $ast.add(new IfStatement(
 		 			$iftkn.getLine(),
 		   			$iftkn.getCharPositionInLine() + 1,
 		   			$expression.ast, $b1.ast
-		 	); }		 
-		 	('else' b2=block { ((IfStatement) $ast).setElsePart($b2.ast); } )?
+		 	)); }		 
+		 	('else' b2=block { ((IfStatement) $ast.get(0)).setElsePart($b2.ast); } )?
 		 | wh='while' '(' expression ')' block
-		 	{ $ast = new WhileStatement(
+		 	{ $ast.add(new WhileStatement(
 		 			$wh.getLine(),
 		   			$wh.getCharPositionInLine() + 1,
 		   			$expression.ast, $block.ast
-		 	); }
+		 	)); }
 		 | ret='return' expression ';'
-		 	{ $ast = new ReturnStatement(
+		 	{ $ast.add(new ReturnStatement(
 				 	$ret.getLine(),
 		   			$ret.getCharPositionInLine() + 1,
 				 	$expression.ast 
-   			); }	
+   			)); }	
 		 | rd='read' e1=expression 
-		 	{ $ast = new ReadStatement(
+		 	{ $ast.add(new ReadStatement(
 				 	$rd.getLine(),
 		   			$rd.getCharPositionInLine() + 1,
 				 	$e1.ast 
-   			); }	
+   			)); }	
    			(',' e2=expression
-   				{ $ast = new ReadStatement(
+   				{ $ast.add(new ReadStatement(
 				 	$rd.getLine(),
 		   			$rd.getCharPositionInLine() + 1,
 				 	$e2.ast 
-   				); }	
+   				)); }	
    			)* ';' 
 		 | wrt='write' e1=expression  
-		 	{ $ast = new WriteStatement(
+		 	{ $ast.add(new WriteStatement(
 				 	$wrt.getLine(),
 		   			$wrt.getCharPositionInLine() + 1,
 				 	$e1.ast 
-   			); }
+   			)); }
    			(',' e2=expression
-   				{ $ast = new WriteStatement(
+   				{ $ast.add(new WriteStatement(
 				 	$wrt.getLine(),
 		   			$wrt.getCharPositionInLine() + 1,
 				 	$e2.ast 
-   				); }
+   				)); }
    			)* ';'
 		 | ID '(' arguments ')' ';'
-		 	{ $ast = new Invocation(
+		 	{ $ast.add(new Invocation(
 					$ID.getLine(),
 					$ID.getCharPositionInLine() + 1,
 					new Variable(
 						$ID.getLine(), 
 						$ID.getCharPositionInLine() + 1,
 						$ID.text), 
-					$arguments.ast); 
+					$arguments.ast)); 
 			}
 		 ;
 	
 /* BLOCK */
 	 
 block returns [List<Statement> ast = new ArrayList<Statement>()]: 
-	 statement { $ast.add($statement.ast); }
-	 | '{' (statement { $ast.add($statement.ast); } )* '}'
+	 statement { $ast.addAll($statement.ast); }
+	 | '{' (statement { $ast.addAll($statement.ast); } )* '}'
 	 ;       
        
 /* EXPRESSIONS */
@@ -230,19 +230,19 @@ expression returns [Expression ast]:
 		  	{ $ast = new IntLiteral(		  			
    					$INT_CONSTANT.getLine(), 
    					$INT_CONSTANT.getCharPositionInLine() + 1, 
-   					Integer.valueOf($INT_CONSTANT.text)
+   					$INT_CONSTANT.text
    			); }
 		  | REAL_CONSTANT
 		  	{ $ast = new RealLiteral(
 		  			$REAL_CONSTANT.getLine(),
 		   			$REAL_CONSTANT.getCharPositionInLine() + 1,
-		  			Double.parseDouble($REAL_CONSTANT.text)
+		  			$REAL_CONSTANT.text
 		   	); }
 		  | CHAR_CONSTANT 		  	
 		  	{ $ast = new CharLiteral(
 		  			$CHAR_CONSTANT.getLine(),
    					$CHAR_CONSTANT.getCharPositionInLine() + 1, 
-   					($CHAR_CONSTANT.text).charAt(0)
+   					$CHAR_CONSTANT.text
    			); }
 		  ;
 		  

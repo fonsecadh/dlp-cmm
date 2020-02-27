@@ -5,9 +5,9 @@ public class RealLiteral extends AbstractExpression {
 	// Attributes
 	private double value;
 
-	public RealLiteral(int line, int column, double value) {
+	public RealLiteral(int line, int column, String value) {
 		super(line, column);
-		this.value = value;
+		this.value = Double.parseDouble(value);
 	}
 
 	public double getValue() {
