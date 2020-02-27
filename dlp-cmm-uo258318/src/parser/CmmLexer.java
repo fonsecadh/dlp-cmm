@@ -4,7 +4,7 @@ package parser;
 	import ast.*;
 	import ast.definitions.*;
 	import ast.expressions.*;
-	import ast.nodes.*;
+	import ast.expressions.Comparator;
 	import ast.statements.*;
 	import ast.types.*;
 	

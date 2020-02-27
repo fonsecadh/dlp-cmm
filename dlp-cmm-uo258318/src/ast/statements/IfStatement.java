@@ -16,7 +16,6 @@ public class IfStatement extends AbstractStatement {
 		super(line, column);
 		this.condition = condition;
 		this.ifPart = new ArrayList<Statement>(ifPart);
-		this.elsePart = new ArrayList<Statement>(elsePart);
 	}
 
 	public IfStatement(int line, int column, Expression condition, List<Statement> ifPart, List<Statement> elsePart) {
