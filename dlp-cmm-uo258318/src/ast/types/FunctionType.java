@@ -2,6 +2,7 @@ package ast.types;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ast.definitions.VarDefinition;
 
@@ -18,6 +19,7 @@ public class FunctionType extends AbstractType {
 		this.line = line;
 		this.column = column;
 		this.returnType = returnType;
+		checkRepeatedParams(new ArrayList<VarDefinition>(params));
 		this.params = new ArrayList<VarDefinition>(params);
 	}
 
@@ -42,6 +44,23 @@ public class FunctionType extends AbstractType {
 
 	public List<VarDefinition> getParams() {
 		return new ArrayList<VarDefinition>(params);
+	}
+
+	private void checkRepeatedParams(ArrayList<VarDefinition> params) {
+		List<String> sortedParams = params
+				.parallelStream()
+				.map(p -> p.getName())
+				.sorted()
+				.collect(Collectors.toList());
+		String s = "";
+		for (String str : sortedParams) {
+			if (str.equals(s)) {
+				new ErrorType("Duplicate parameter: " + str 
+						+ " in function definition at line: " + line 
+						+ ", col: " + column);
+			}
+			s = str;
+		}		
 	}
 
 }
