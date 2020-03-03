@@ -2,11 +2,7 @@ struct {
 	int a;
 	char b;
 	double a;
-	double b;
 } record;
-
-void foo(int c, int c) {
-}
 
 void main() {
 }

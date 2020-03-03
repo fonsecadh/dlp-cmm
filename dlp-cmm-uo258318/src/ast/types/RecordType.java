@@ -38,7 +38,7 @@ public class RecordType extends AbstractType {
 		return column;
 	}
 
-	private void checkRepeatedFields(List<RecordField> fields) { // TODO: Refactor this code
+	private void checkRepeatedFields(List<RecordField> fields) {
 		List<String> sortedFieldNames = fields.parallelStream().map(f -> f.getFieldName()).sorted()
 				.collect(Collectors.toList());
 		String s = "";
