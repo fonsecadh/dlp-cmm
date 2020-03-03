@@ -47,20 +47,15 @@ public class FunctionType extends AbstractType {
 	}
 
 	private void checkRepeatedParams(ArrayList<VarDefinition> params) {
-		List<String> sortedParams = params
-				.parallelStream()
-				.map(p -> p.getName())
-				.sorted()
-				.collect(Collectors.toList());
+		List<String> sortedParams = params.parallelStream().map(p -> p.getName()).sorted().collect(Collectors.toList());
 		String s = "";
 		for (String str : sortedParams) {
 			if (str.equals(s)) {
-				new ErrorType("Duplicate parameter: " + str 
-						+ " in function definition at line: " + line 
-						+ ", col: " + column);
+				new ErrorType("Duplicate parameter: " + str + " in function definition at line: " + line + ", col: "
+						+ column);
 			}
 			s = str;
-		}		
+		}
 	}
 
 }

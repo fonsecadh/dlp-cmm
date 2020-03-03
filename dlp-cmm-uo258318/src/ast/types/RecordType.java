@@ -39,17 +39,12 @@ public class RecordType extends AbstractType {
 	}
 
 	private void checkRepeatedFields(List<RecordField> fields) { // TODO: Refactor this code
-		List<String> sortedFieldNames = fields
-				.parallelStream()
-				.map(f -> f.getFieldName())
-				.sorted()
+		List<String> sortedFieldNames = fields.parallelStream().map(f -> f.getFieldName()).sorted()
 				.collect(Collectors.toList());
 		String s = "";
 		for (String str : sortedFieldNames) {
 			if (str.equals(s)) {
-				new ErrorType("Repeated field name: " + str 
-						+ " in record field at line: " + line 
-						+ ", col: " + column);
+				new ErrorType("Repeated field name: " + str + " in record field at line: " + line + ", col: " + column);
 			}
 			s = str;
 		}
