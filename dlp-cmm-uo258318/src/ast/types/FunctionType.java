@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ast.definitions.VarDefinition;
+import visitor.Visitor;
 
 public class FunctionType extends AbstractType {
 
@@ -51,11 +52,15 @@ public class FunctionType extends AbstractType {
 		String s = "";
 		for (String str : sortedParams) {
 			if (str.equals(s)) {
-				new ErrorType("Duplicate parameter: " + str + " in function definition at line: " + line + ", col: "
-						+ column);
+				new ErrorType("Duplicate parameter: " + str + " in function definition");
 			}
 			s = str;
 		}
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

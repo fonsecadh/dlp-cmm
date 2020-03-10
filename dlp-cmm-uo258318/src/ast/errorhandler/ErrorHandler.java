@@ -38,4 +38,8 @@ public class ErrorHandler {
 		errors.forEach(e -> printStream.println(e.toString()));
 	}
 
+	public void clearErrors() {
+		errors.clear();
+	}
+
 }

@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 public class ArrayAccess extends AbstractExpression {
 
 	// Attribute
@@ -19,6 +21,11 @@ public class ArrayAccess extends AbstractExpression {
 
 	public Expression getArray() {
 		return array;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

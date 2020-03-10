@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 public class CharLiteral extends AbstractExpression {
 
 	// Attributes
@@ -41,6 +43,11 @@ public class CharLiteral extends AbstractExpression {
 			return '\t';
 		}
 		return 0;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

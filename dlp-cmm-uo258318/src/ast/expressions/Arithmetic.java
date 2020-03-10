@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 public class Arithmetic extends AbstractExpression {
 	
 	// Attributes
@@ -25,6 +27,11 @@ public class Arithmetic extends AbstractExpression {
 
 	public Expression getRight() {
 		return right;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

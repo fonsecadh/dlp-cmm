@@ -8,6 +8,8 @@ import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import parser.CmmLexer;
 import parser.CmmParser;
+import semantic.TypeCheckingVisitor;
+import visitor.Visitor;
 
 public class Main {
 
@@ -29,11 +31,25 @@ public class Main {
 		// Check Errors
 		if (ErrorHandler.getInstance().anyErrors()) {
 			ErrorHandler.getInstance().showErrors(System.err);
-		} else { // If there are no errors
-			// The AST is shown
-			IntrospectorModel model = new IntrospectorModel("Program", ast);
-			new IntrospectorTree("Introspector", model);
 		}
+		
+		// The AST is shown
+		IntrospectorModel model = new IntrospectorModel("Program", ast);
+		new IntrospectorTree("Introspector", model);
+		
+		// Type checking visitor
+		Visitor<Void, Void> typeCheckingVisitor = new TypeCheckingVisitor();
+		ast.accept(typeCheckingVisitor, null);
+		System.out.println("Type Checking Visitor");
+		
+		if (ErrorHandler.getInstance().anyErrors()) {
+			ErrorHandler.getInstance().showErrors(System.err);
+			ErrorHandler.getInstance().clearErrors();
+		} else {
+			System.out.println("No type errors.");
+		}
+		
+		
 	}
 
 }

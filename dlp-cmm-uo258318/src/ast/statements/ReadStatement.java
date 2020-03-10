@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 public class ReadStatement extends AbstractStatement {
 
@@ -15,6 +16,11 @@ public class ReadStatement extends AbstractStatement {
 
 	public Expression getBody() {
 		return body;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

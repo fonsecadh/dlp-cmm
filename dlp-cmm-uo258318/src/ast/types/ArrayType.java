@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 public class ArrayType extends AbstractType {
 
 	// Attributes
@@ -50,6 +52,11 @@ public class ArrayType extends AbstractType {
 		} else {
 			this.of = of;
 		}
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

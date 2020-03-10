@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.errorhandler.ErrorHandler;
+import visitor.Visitor;
 
 public class ErrorType extends AbstractType {
 
@@ -45,7 +46,12 @@ public class ErrorType extends AbstractType {
 	
 	@Override
 	public String toString() {
-		return getMessage();
+		return getMessage() + " - at line: " + line + ", column: " + column;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

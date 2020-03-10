@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import visitor.Visitor;
+
 public class RecordType extends AbstractType {
 
 	// Attributes
@@ -44,10 +46,15 @@ public class RecordType extends AbstractType {
 		String s = "";
 		for (String str : sortedFieldNames) {
 			if (str.equals(s)) {
-				new ErrorType("Repeated field name: " + str + " in record field at line: " + line + ", col: " + column);
+				new ErrorType("Repeated field name: " + str + " in record field");
 			}
 			s = str;
 		}
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

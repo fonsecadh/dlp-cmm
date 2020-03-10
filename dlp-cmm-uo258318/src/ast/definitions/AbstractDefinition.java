@@ -1,8 +1,9 @@
 package ast.definitions;
 
 import ast.types.Type;
+import visitor.Visitor;
 
-public class AbstractDefinition implements Definition {
+public abstract class AbstractDefinition implements Definition {
 	
 	// Attributes
 	private int line;

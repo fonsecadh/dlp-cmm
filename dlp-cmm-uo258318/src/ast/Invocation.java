@@ -7,6 +7,7 @@ import ast.expressions.AbstractExpression;
 import ast.expressions.Expression;
 import ast.expressions.Variable;
 import ast.statements.Statement;
+import visitor.Visitor;
 
 public class Invocation extends AbstractExpression implements Statement {
 
@@ -27,6 +28,11 @@ public class Invocation extends AbstractExpression implements Statement {
 
 	public List<Expression> getParams() {
 		return new ArrayList<Expression>(params);
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

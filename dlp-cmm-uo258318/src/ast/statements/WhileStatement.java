@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 public class WhileStatement extends AbstractStatement {
 
@@ -23,6 +24,11 @@ public class WhileStatement extends AbstractStatement {
 
 	public List<Statement> getBody() {
 		return new ArrayList<Statement>(body);
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }

@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 public class UnaryNot extends AbstractExpression {
 
 	// Attributes
@@ -13,6 +15,11 @@ public class UnaryNot extends AbstractExpression {
 
 	public Expression getOperand() {
 		return operand;
+	}
+	
+	@Override
+	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
+		return v.visit(this, p);
 	}
 
 }
