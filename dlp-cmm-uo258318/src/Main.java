@@ -10,7 +10,6 @@ import parser.CmmLexer;
 import parser.CmmParser;
 import semantic.IdentificationVisitor;
 import semantic.TypeCheckingVisitor;
-import symboltable.SymbolTable;
 import visitor.Visitor;
 
 public class Main {
@@ -36,8 +35,8 @@ public class Main {
 		}
 
 		// Identification visitor
-		Visitor<SymbolTable, Void> visitorIdentification = new IdentificationVisitor();
-		ast.accept(visitorIdentification, new SymbolTable());
+		Visitor<Void, Void> visitorIdentification = new IdentificationVisitor();
+		ast.accept(visitorIdentification, null);
 		System.out.println("Identification visitor");
 
 		if (ErrorHandler.getInstance().anyErrors()) {
