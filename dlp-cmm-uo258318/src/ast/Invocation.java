@@ -22,7 +22,7 @@ public class Invocation extends AbstractExpression implements Statement {
 		this.params = new ArrayList<Expression>(params);
 	}
 
-	public Variable getName() {
+	public Variable getVariable() {
 		return name;
 	}
 

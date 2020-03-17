@@ -1,13 +1,13 @@
 package ast.definitions;
 
 import ast.types.Type;
-import visitor.Visitor;
 
 public abstract class AbstractDefinition implements Definition {
 	
 	// Attributes
 	private int line;
 	private int column;
+	private int scope;
 	private String name;
 	private Type type;
 
@@ -37,6 +37,16 @@ public abstract class AbstractDefinition implements Definition {
 	@Override
 	public Type getType() {
 		return type;
+	}
+	
+	@Override
+	public int getScope() {
+		return scope;
+	}
+	
+	@Override
+	public void setScope(int scope) {
+		this.scope = scope;	
 	}
 
 }

@@ -1,17 +1,22 @@
+// * Global variables
+int i,n;
+char c;
+struct {
+  int intField;
+  double realField;
+} record;
 
-double f(int e) {
-  return (double)e;
+// * Functions
+int f(int a, double c) {
+  double real;
+  real = c;
+  i = a;
+  return n;
 }
-
 
 // * Main program
 void main() {
-  int i,a,j;
-  double[10] v;
-  
-  a = 0;
-  i = 0;
-  j = -i*a-2;  
-  v[ (int)(v[j]) ] = a;
-  write 'f', '(', 'i', ')', '=' ,f(i);
+  int i;
+  double r;
+  write i, f(n,r), record.intField, record.realField;
 }
