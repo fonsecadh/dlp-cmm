@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.expressions.Expression;
 import visitor.Visitor;
 
 public class ArrayType extends AbstractType {
@@ -41,13 +42,8 @@ public class ArrayType extends AbstractType {
 		return column;
 	}
 	
-	@Override
-	public boolean isArrayType() {
-		return true;
-	}
-	
 	public void setTypeOfElements(Type of) {
-		if (this.of.isArrayType()) {
+		if (this.of instanceof ArrayType) {
 			((ArrayType) this.of).setTypeOfElements(of);
 		} else {
 			this.of = of;
@@ -57,6 +53,14 @@ public class ArrayType extends AbstractType {
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
 		return v.visit(this, p);
+	}
+	
+	@Override
+	public Type squareBrackets(Type type, Expression e) {
+		if (type instanceof ErrorType) {
+			return type;
+		}
+		return of;
 	}
 
 }
