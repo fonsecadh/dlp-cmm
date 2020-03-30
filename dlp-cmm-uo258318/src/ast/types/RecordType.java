@@ -47,7 +47,7 @@ public class RecordType extends AbstractType {
 		String s = "";
 		for (String str : sortedFieldNames) {
 			if (str.equals(s)) {
-				new ErrorType("Repeated field name: " + str + " in record field");
+				new ErrorType(line, column, "repeated field name: " + str + " in record field");
 			}
 			s = str;
 		}
@@ -65,7 +65,7 @@ public class RecordType extends AbstractType {
 				return recField.getFieldType();
 			}
 		}
-		return new ErrorType("The type " + this.getName() + " does not have a field called " + fieldName);
+		return new ErrorType("type " + this.getName() + " does not have a field called " + fieldName);
 	}
 
 }

@@ -55,7 +55,7 @@ public class IntType extends AbstractType {
 	@Override
 	public Type assign(Type type, Statement e) {
 		if (type instanceof IntType) {
-			return null;
+			return this;
 		}
 		return super.assign(type, e);
 	}

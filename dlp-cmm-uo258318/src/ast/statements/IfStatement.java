@@ -33,6 +33,9 @@ public class IfStatement extends AbstractStatement {
 	}
 
 	public List<Statement> getElsePart() {
+		if (elsePart == null) {
+			return new ArrayList<Statement>();
+		}
 		return new ArrayList<Statement>(elsePart);
 	}
 	

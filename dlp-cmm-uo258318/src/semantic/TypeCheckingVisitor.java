@@ -137,7 +137,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 	public Void visit(Assignment e, Type param) {
 		super.visit(e, param);
 		if (e.getLeft().getLValue() == false) {
-			new ErrorType(e.getLine(), e.getColumn(), "The left part of the assignment is not an l-value");
+			new ErrorType(e.getLine(), e.getColumn(), "the left part of the assignment is not an l-value");
 		}
 		Expression left = e.getLeft();
 		Expression right = e.getRight();
@@ -159,7 +159,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 	public Void visit(ReadStatement e, Type param) {
 		super.visit(e, param);
 		if (e.getBody().getLValue() == false) {
-			new ErrorType(e.getLine(), e.getColumn(), "Read statement requires an l-value");
+			new ErrorType(e.getLine(), e.getColumn(), "read statement requires an l-value");
 		}
 		e.getBody().getType().read(e);
 		return null;

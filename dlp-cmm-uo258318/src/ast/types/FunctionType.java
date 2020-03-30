@@ -53,7 +53,7 @@ public class FunctionType extends AbstractType {
 		String s = "";
 		for (String str : sortedParams) {
 			if (str.equals(s)) {
-				new ErrorType("Duplicate parameter: " + str + " in function definition");
+				new ErrorType(line, column, "duplicate parameter: " + str + " in function definition");
 			}
 			s = str;
 		}
@@ -67,14 +67,14 @@ public class FunctionType extends AbstractType {
 	@Override
 	public Type parenthesis(Type[] types, Expression e) {
 		if (types.length != this.getParams().size()) {
-			return new ErrorType("The number of parameters does not match.");
+			return new ErrorType(e.getLine(), e.getColumn(), "number of parameters does not match.");
 		}
 		for (int i = 0; i < this.getParams().size(); i++) {
 			Type type = types[i];
 			Type param = this.getParams().get(i).getType();
 			if (!type.getClass().equals(param.getClass())) {
-				return new ErrorType("Parameter " + i + " is of type " + param.getName() + " and it must be of type "
-						+ type.getName());
+				return new ErrorType(e.getLine(), e.getColumn(), "parameter " + i + " is of type " + type.getName() + " and it must be of type "
+						+ param.getName());
 			}
 		}
 		return this.getReturnType();

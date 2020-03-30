@@ -19,7 +19,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	public Void visit(Invocation e, Void param) {
 		Definition def = symbolTable.find(e.getVariable().getName());
 		if (def == null) {
-			new ErrorType(e.getLine(), e.getColumn(), "Variable " + e.getVariable().getName() + " is not declared.");
+			new ErrorType(e.getLine(), e.getColumn(), "variable " + e.getVariable().getName() + " is not declared.");
 		}
 		e.getVariable().setDefinition(def);
 		super.visit(e, param);
@@ -30,7 +30,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 	public Void visit(Variable e, Void param) {
 		Definition def = symbolTable.find(e.getName());
 		if (def == null) {
-			new ErrorType(e.getLine(), e.getColumn(), "Variable " + e.getName() + " is not declared.");
+			new ErrorType(e.getLine(), e.getColumn(), "variable " + e.getName() + " is not declared.");
 		}
 		e.setDefinition(def);
 		super.visit(e, param);
@@ -43,7 +43,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 		boolean result = symbolTable.insert(e);
 		if (result == false) {
 			new ErrorType(e.getLine(), e.getColumn(),
-					"Variable " + e.getName() + " already declared in current scope.");
+					"variable " + e.getName() + " already declared in current scope.");
 		}
 		symbolTable.set();
 		super.visit(e, param);
@@ -56,7 +56,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 		boolean result = symbolTable.insert(e);
 		if (result == false) {
 			new ErrorType(e.getLine(), e.getColumn(),
-					"Variable " + e.getName() + " already declared in current scope.");
+					"variable " + e.getName() + " already declared in current scope.");
 		}
 		super.visit(e, param);
 		return null;

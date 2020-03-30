@@ -33,6 +33,7 @@ public class Main {
 		// Check Errors
 		if (ErrorHandler.getInstance().anyErrors()) {
 			ErrorHandler.getInstance().showErrors(System.err);
+			ErrorHandler.getInstance().clearErrors();
 		}
 
 		// Identification visitor

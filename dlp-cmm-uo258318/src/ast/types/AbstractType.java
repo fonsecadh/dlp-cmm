@@ -10,8 +10,7 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "arithmetic operator not supported by type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "arithmetic operator not supported by type " + type.getName());
 	}
 
 	@Override
@@ -19,8 +18,7 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "assign operator not supported by type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "assign operator not supported by type " + type.getName());
 	}
 
 	@Override
@@ -28,17 +26,20 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "cast operator not supported by type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "cast operator not supported by type " + type.getName());
 	}
 
 	@Override
 	public Type comparator(Type type, Expression e) {
 		if (type instanceof ErrorType) {
 			return type;
+		} else if (!type.equivalent(this)) {
+			return new ErrorType(e.getLine(), e.getColumn(),
+					"cannot compare type " + this.getName() + " with type " + type.getName());
+		} else {
+			return new ErrorType(e.getLine(), e.getColumn(),
+					"comparator operator not supported by type " + this.getName());
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "comparator operator not supported by type " + type.getName());
-		return null;
 	}
 
 	@Override
@@ -46,8 +47,8 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "conditional operator not supported by type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(),
+				"conditional operator not supported by type " + type.getName());
 	}
 
 	@Override
@@ -55,20 +56,17 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "dot operator not supported by type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "dot operator not supported by type " + type.getName());
 	}
 
 	@Override
 	public Type negation(Expression e) {
-		new ErrorType(e.getLine(), e.getColumn(), "negation operator not supported by type " + this.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "negation operator not supported by type " + this.getName());
 	}
 
 	@Override
 	public Type not(Expression e) {
-		new ErrorType(e.getLine(), e.getColumn(), "not operator not supported by type " + this.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "not operator not supported by type " + this.getName());
 	}
 
 	@Override
@@ -78,8 +76,8 @@ public abstract class AbstractType implements Type {
 				return type;
 			}
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "parenthesis operator not supported by type " + this.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(),
+				"parenthesis operator not supported by type " + this.getName());
 	}
 
 	@Override
@@ -87,8 +85,7 @@ public abstract class AbstractType implements Type {
 		if (this instanceof ErrorType) {
 			return this;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "read operator not supported by type " + this.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "read operator not supported by type " + this.getName());
 	}
 
 	@Override
@@ -96,9 +93,8 @@ public abstract class AbstractType implements Type {
 		if (this instanceof ErrorType) {
 			return this;
 		}
-		new ErrorType(e.getLine(), e.getColumn(),
-				"type " + this.getName() + " does not match with type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(),
+				"type " + this.getName() + " does not match with return type " + type.getName());
 	}
 
 	@Override
@@ -106,8 +102,8 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "square brackets operator not supported by type " + type.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(),
+				"square brackets operator not supported by type " + type.getName());
 	}
 
 	@Override
@@ -115,8 +111,7 @@ public abstract class AbstractType implements Type {
 		if (this instanceof ErrorType) {
 			return this;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "write operator not supported by type " + this.getName());
-		return null;
+		return new ErrorType(e.getLine(), e.getColumn(), "write operator not supported by type " + this.getName());
 	}
 
 	@Override

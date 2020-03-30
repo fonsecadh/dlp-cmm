@@ -61,7 +61,9 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	public TR visit(IfStatement e, TP param) {
 		e.getCondition().accept(this, param);
 		e.getIfPart().forEach(s -> s.accept(this, param));
-		e.getElsePart().forEach(s -> s.accept(this, param));
+		if (e.getElsePart() != null) {
+			e.getElsePart().forEach(s -> s.accept(this, param));
+		}
 		return null;
 	}
 	
@@ -76,6 +78,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	}
 	
 	public TR visit(WhileStatement e, TP param) {
+		e.getCondition().accept(this, param);
 		e.getBody().forEach(s -> s.accept(this, param));
 		return null;
 	}
