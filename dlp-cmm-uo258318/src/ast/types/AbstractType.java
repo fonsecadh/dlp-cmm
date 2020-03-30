@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.expressions.Expression;
+import ast.statements.Statement;
 
 public abstract class AbstractType implements Type {
 
@@ -8,13 +9,13 @@ public abstract class AbstractType implements Type {
 	public Type arithmetic(Type type, Expression e) {
 		if (type instanceof ErrorType) {
 			return type;
-		}		
+		}
 		new ErrorType(e.getLine(), e.getColumn(), "arithmetic operator not supported by type " + type.getName());
 		return null;
 	}
 
 	@Override
-	public Type assign(Type type, Expression e) {
+	public Type assign(Type type, Statement e) {
 		if (type instanceof ErrorType) {
 			return type;
 		}
@@ -50,7 +51,7 @@ public abstract class AbstractType implements Type {
 	}
 
 	@Override
-	public Type dot(Type type, Expression e) {
+	public Type dot(Type type, String fieldName, Expression e) {
 		if (type instanceof ErrorType) {
 			return type;
 		}
@@ -82,20 +83,21 @@ public abstract class AbstractType implements Type {
 	}
 
 	@Override
-	public Type read(Type type, Expression e) {
-		if (type instanceof ErrorType) {
-			return type;
+	public Type read(Statement e) {
+		if (this instanceof ErrorType) {
+			return this;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "read operator not supported by type " + type.getName());
+		new ErrorType(e.getLine(), e.getColumn(), "read operator not supported by type " + this.getName());
 		return null;
 	}
 
 	@Override
-	public Type ret(Type type, Expression e) {
-		if (type instanceof ErrorType) {
-			return type;
+	public Type ret(Type type, Statement e) {
+		if (this instanceof ErrorType) {
+			return this;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "return operator not supported by type " + type.getName());
+		new ErrorType(e.getLine(), e.getColumn(),
+				"type " + this.getName() + " does not match with type " + type.getName());
 		return null;
 	}
 
@@ -109,21 +111,21 @@ public abstract class AbstractType implements Type {
 	}
 
 	@Override
-	public Type write(Type type, Expression e) {
-		if (type instanceof ErrorType) {
-			return type;
+	public Type write(Statement e) {
+		if (this instanceof ErrorType) {
+			return this;
 		}
-		new ErrorType(e.getLine(), e.getColumn(), "write operator not supported by type " + type.getName());
+		new ErrorType(e.getLine(), e.getColumn(), "write operator not supported by type " + this.getName());
 		return null;
 	}
-	
+
 	@Override
 	public boolean isBoolean() {
 		return false;
 	}
-	
+
 	@Override
-	public boolean equivalent(Type type) {		
+	public boolean equivalent(Type type) {
 		if (this.getName().equals(type.getName())) {
 			return true;
 		} else {

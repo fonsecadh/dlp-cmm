@@ -1,11 +1,14 @@
 package ast.expressions;
 
+import ast.types.Type;
+
 public abstract class AbstractExpression implements Expression {
 	
 	// Attributes
 	private int line;
 	private int column;
 	private boolean lvalue;
+	private Type type;
 	
 	// Constructor
 	public AbstractExpression(int line, int column) {
@@ -31,6 +34,16 @@ public abstract class AbstractExpression implements Expression {
 	@Override
 	public void setLValue(boolean lvalue) {
 		this.lvalue = lvalue;	
+	}
+	
+	@Override
+	public Type getType() {
+		return type;
+	}
+	
+	@Override
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 }

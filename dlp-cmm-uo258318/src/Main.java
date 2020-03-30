@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import ast.Program;
 import ast.errorhandler.ErrorHandler;
+import ast.types.Type;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import parser.CmmLexer;
@@ -47,7 +48,7 @@ public class Main {
 		}
 
 		// Type checking visitor
-		Visitor<Void, Void> typeCheckingVisitor = new TypeCheckingVisitor();
+		Visitor<Type, Void> typeCheckingVisitor = new TypeCheckingVisitor();
 		ast.accept(typeCheckingVisitor, null);
 		System.out.println("Type Checking Visitor");
 
