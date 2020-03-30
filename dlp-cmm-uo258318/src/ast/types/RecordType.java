@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ast.expressions.Expression;
 import visitor.Visitor;
 
 public class RecordType extends AbstractType {
@@ -51,10 +52,20 @@ public class RecordType extends AbstractType {
 			s = str;
 		}
 	}
-	
+
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
 		return v.visit(this, p);
+	}
+
+	@Override
+	public Type dot(Type type, String fieldName, Expression e) {
+		for (RecordField recField : this.getFields()) {
+			if (recField.getFieldName().equals(fieldName)) {
+				return recField.getFieldType();
+			}
+		}
+		return new ErrorType("The type " + this.getName() + " does not have a field called " + fieldName);
 	}
 
 }
