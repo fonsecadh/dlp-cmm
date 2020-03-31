@@ -70,6 +70,7 @@ public class OffsetVisitor extends AbstractVisitor<Boolean, Void> {
 	@Override
 	public Void visit(RecordType e, Boolean isAParameter) {
 		super.visit(e, isAParameter);
+		// We set the offset of the record fields
 		e.getFields().forEach(f -> {
 			f.setOffset(recordFieldOffset);
 			recordFieldOffset += f.getFieldType().numberOfBytes();
