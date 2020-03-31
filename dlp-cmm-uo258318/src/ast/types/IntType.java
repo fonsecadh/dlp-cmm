@@ -114,5 +114,10 @@ public class IntType extends AbstractType {
 	public Type write(Statement e) {
 		return this;
 	}
+	
+	@Override
+	public int numberOfBytes() {
+		return 2;
+	}
 
 }

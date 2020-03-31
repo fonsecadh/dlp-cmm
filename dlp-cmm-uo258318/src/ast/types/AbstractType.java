@@ -127,5 +127,10 @@ public abstract class AbstractType implements Type {
 			return false;
 		}
 	}
+	
+	@Override
+	public int numberOfBytes() {
+		return 0;
+	}
 
 }

@@ -68,4 +68,9 @@ public class RecordType extends AbstractType {
 		return new ErrorType("type " + this.getName() + " does not have a field called " + fieldName);
 	}
 
+	@Override
+	public int numberOfBytes() {
+		return this.fields.stream().mapToInt(recField -> recField.getFieldType().numberOfBytes()).sum();
+	}
+	
 }

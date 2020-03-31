@@ -15,6 +15,7 @@ public class FunctionType extends AbstractType {
 	private int column;
 	private Type returnType;
 	private List<VarDefinition> params;
+	private int localVarSize;
 
 	// Constructor
 	public FunctionType(int line, int column, Type returnType, List<VarDefinition> params) {
@@ -73,11 +74,30 @@ public class FunctionType extends AbstractType {
 			Type type = types[i];
 			Type param = this.getParams().get(i).getType();
 			if (!type.getClass().equals(param.getClass())) {
-				return new ErrorType(e.getLine(), e.getColumn(), "parameter " + i + " is of type " + type.getName() + " and it must be of type "
-						+ param.getName());
+				return new ErrorType(e.getLine(), e.getColumn(), "parameter " + i + " is of type " + type.getName()
+						+ " and it must be of type " + param.getName());
 			}
 		}
 		return this.getReturnType();
+	}
+
+	public int getLocalVariableSize() {
+		return localVarSize;
+	}
+
+	public void setLocalVariableSize(int localVarSize) {
+		this.localVarSize = localVarSize;
+	}
+
+	@Override
+	public int numberOfBytes() {
+		int sizeOfReturnType = this.returnType.numberOfBytes();
+		int sizeOfParams = this.getSizeOfParams();
+		return this.localVarSize + sizeOfParams + sizeOfReturnType;
+	}
+
+	public int getSizeOfParams() {
+		return params.stream().mapToInt(param -> param.getType().numberOfBytes()).sum();
 	}
 
 }

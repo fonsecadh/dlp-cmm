@@ -10,6 +10,7 @@ public abstract class AbstractDefinition implements Definition {
 	private int scope;
 	private String name;
 	private Type type;
+	private int offset;
 
 	// Constructor
 	public AbstractDefinition(int line, int column, String name, Type type) {
@@ -47,6 +48,16 @@ public abstract class AbstractDefinition implements Definition {
 	@Override
 	public void setScope(int scope) {
 		this.scope = scope;	
+	}
+	
+	@Override
+	public int getOffset() {
+		return offset;
+	}
+	
+	@Override
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 }

@@ -5,6 +5,7 @@ public class RecordField {
 	// Attributes
 	private String fieldName;
 	private Type fieldType;
+	private int offset;
 
 	// Constructor
 	public RecordField(String fieldName, Type fieldType) {
@@ -18,6 +19,14 @@ public class RecordField {
 
 	public Type getFieldType() {
 		return fieldType;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 }

@@ -25,5 +25,8 @@ public interface Type extends ASTNode {
 	
 	boolean isBoolean();
 	boolean equivalent(Type type);
+	
+	// Code Generation
+	int numberOfBytes();
 
 }

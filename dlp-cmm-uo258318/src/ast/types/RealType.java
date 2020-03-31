@@ -85,5 +85,10 @@ public class RealType extends AbstractType {
 	public Type write(Statement e) {
 		return this;
 	}
+	
+	@Override
+	public int numberOfBytes() {
+		return 4;
+	}
 
 }

@@ -75,5 +75,10 @@ public class CharType extends AbstractType {
 	public Type write(Statement e) {
 		return this;
 	}
+	
+	@Override
+	public int numberOfBytes() {
+		return 1;
+	}
 
 }
