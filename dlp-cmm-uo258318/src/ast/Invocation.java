@@ -35,4 +35,10 @@ public class Invocation extends AbstractExpression implements Statement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "Invocation [name=" + name + ", params=" + params + ", getLine()=" + getLine() + ", getColumn()="
+				+ getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

@@ -21,5 +21,11 @@ public class UnaryMinus extends AbstractExpression {
 	public Expression getOperand() {
 		return operand;
 	}
+
+	@Override
+	public String toString() {
+		return "UnaryMinus [operand=" + operand + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
 	
 }

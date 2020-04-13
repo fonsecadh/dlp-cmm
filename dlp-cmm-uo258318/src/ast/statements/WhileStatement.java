@@ -31,4 +31,10 @@ public class WhileStatement extends AbstractStatement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "WhileStatement [condition=" + condition + ", body=" + body + ", getLine()=" + getLine()
+				+ ", getColumn()=" + getColumn() + "]";
+	}
+
 }

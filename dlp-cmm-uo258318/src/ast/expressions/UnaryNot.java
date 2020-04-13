@@ -22,4 +22,10 @@ public class UnaryNot extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "UnaryNot [operand=" + operand + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

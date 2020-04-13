@@ -40,4 +40,10 @@ public class VoidType extends AbstractType {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "VoidType [getName()=" + getName() + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", numberOfBytes()=" + numberOfBytes() + "]";
+	}
+
 }

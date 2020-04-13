@@ -63,4 +63,10 @@ public class ArrayType extends AbstractType {
 		return of;
 	}
 
+	@Override
+	public String toString() {
+		return "ArrayType [line=" + line + ", column=" + column + ", of=" + of + ", size=" + size + ", getOf()="
+				+ getOf() + ", getSize()=" + getSize() + ", getName()=" + getName() + "]";
+	}
+
 }

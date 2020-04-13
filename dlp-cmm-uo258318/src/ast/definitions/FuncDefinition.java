@@ -27,4 +27,10 @@ public class FuncDefinition extends AbstractDefinition {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "FuncDefinition [getLine()=" + getLine() + ", getColumn()=" + getColumn() + ", getName()=" + getName()
+				+ ", getType()=" + getType() + ", getScope()=" + getScope() + ", getOffset()=" + getOffset() + "]";
+	}
+
 }

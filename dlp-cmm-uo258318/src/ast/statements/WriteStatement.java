@@ -23,4 +23,9 @@ public class WriteStatement extends AbstractStatement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "WriteStatement [body=" + body + ", getLine()=" + getLine() + ", getColumn()=" + getColumn() + "]";
+	}
+
 }

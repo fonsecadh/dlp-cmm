@@ -3,7 +3,7 @@ package ast.expressions;
 import visitor.Visitor;
 
 public class Arithmetic extends AbstractExpression {
-	
+
 	// Attributes
 	private String operator;
 	private Expression left;
@@ -32,6 +32,12 @@ public class Arithmetic extends AbstractExpression {
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
 		return v.visit(this, p);
+	}
+	
+	@Override
+	public String toString() {
+		return "Arithmetic [operator=" + operator + ", left=" + left + ", right=" + right + ", getLine()=" + getLine()
+				+ ", getColumn()=" + getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
 	}
 
 }

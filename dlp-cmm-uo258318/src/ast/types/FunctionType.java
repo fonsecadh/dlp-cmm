@@ -100,4 +100,10 @@ public class FunctionType extends AbstractType {
 		return params.stream().mapToInt(param -> param.getType().numberOfBytes()).sum();
 	}
 
+	@Override
+	public String toString() {
+		return "FunctionType [line=" + line + ", column=" + column + ", returnType=" + returnType + ", params=" + params
+				+ ", localVarSize=" + localVarSize + ", numberOfBytes()=" + numberOfBytes() + "]";
+	}
+
 }

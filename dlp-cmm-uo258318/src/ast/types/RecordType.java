@@ -72,5 +72,11 @@ public class RecordType extends AbstractType {
 	public int numberOfBytes() {
 		return this.fields.stream().mapToInt(recField -> recField.getFieldType().numberOfBytes()).sum();
 	}
+
+	@Override
+	public String toString() {
+		return "RecordType [line=" + line + ", column=" + column + ", fields=" + fields + ", getName()=" + getName()
+				+ ", numberOfBytes()=" + numberOfBytes() + "]";
+	}
 	
 }

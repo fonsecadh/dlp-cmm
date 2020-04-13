@@ -23,4 +23,9 @@ public class ReadStatement extends AbstractStatement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "ReadStatement [body=" + body + ", getLine()=" + getLine() + ", getColumn()=" + getColumn() + "]";
+	}
+
 }

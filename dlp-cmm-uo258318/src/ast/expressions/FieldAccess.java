@@ -27,4 +27,10 @@ public class FieldAccess extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "FieldAccess [record=" + record + ", fieldName=" + fieldName + ", getLine()=" + getLine()
+				+ ", getColumn()=" + getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

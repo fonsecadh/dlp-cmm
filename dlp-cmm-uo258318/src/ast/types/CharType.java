@@ -81,4 +81,10 @@ public class CharType extends AbstractType {
 		return 1;
 	}
 
+	@Override
+	public String toString() {
+		return "CharType [getName()=" + getName() + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", numberOfBytes()=" + numberOfBytes() + "]";
+	}
+
 }

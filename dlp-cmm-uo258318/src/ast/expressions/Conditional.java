@@ -34,4 +34,10 @@ public class Conditional extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "Conditional [operator=" + operator + ", left=" + left + ", right=" + right + ", getLine()=" + getLine()
+				+ ", getColumn()=" + getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

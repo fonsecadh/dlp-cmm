@@ -35,4 +35,9 @@ public class Program implements ASTNode {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "Program [defs=" + defs + "]";
+	}
+
 }

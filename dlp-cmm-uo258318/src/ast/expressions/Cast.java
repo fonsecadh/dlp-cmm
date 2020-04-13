@@ -29,4 +29,10 @@ public class Cast extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "Cast [castType=" + castType + ", operand=" + operand + ", getLine()=" + getLine() + ", getColumn()="
+				+ getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

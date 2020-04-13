@@ -23,4 +23,9 @@ public class ReturnStatement extends AbstractStatement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "ReturnStatement [body=" + body + ", getLine()=" + getLine() + ", getColumn()=" + getColumn() + "]";
+	}
+
 }

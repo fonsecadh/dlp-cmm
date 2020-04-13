@@ -32,4 +32,10 @@ public class Variable extends AbstractExpression {
 		this.definition = definition;
 	}
 
+	@Override
+	public String toString() {
+		return "Variable [name=" + name + ", definition=" + definition + ", getLine()=" + getLine() + ", getColumn()="
+				+ getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

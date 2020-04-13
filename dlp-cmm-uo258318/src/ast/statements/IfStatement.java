@@ -48,4 +48,10 @@ public class IfStatement extends AbstractStatement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "IfStatement [condition=" + condition + ", ifPart=" + ifPart + ", elsePart=" + elsePart + ", getLine()="
+				+ getLine() + ", getColumn()=" + getColumn() + "]";
+	}
+
 }

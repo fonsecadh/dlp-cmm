@@ -51,4 +51,10 @@ public class RecordField implements ASTNode {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "RecordField [fieldName=" + fieldName + ", fieldType=" + fieldType + ", offset=" + offset + ", line="
+				+ line + ", column=" + column + "]";
+	}
+
 }

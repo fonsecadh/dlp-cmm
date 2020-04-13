@@ -120,4 +120,10 @@ public class IntType extends AbstractType {
 		return 2;
 	}
 
+	@Override
+	public String toString() {
+		return "IntType [getName()=" + getName() + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", numberOfBytes()=" + numberOfBytes() + "]";
+	}
+
 }

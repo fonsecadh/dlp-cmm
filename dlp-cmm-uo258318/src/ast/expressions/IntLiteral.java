@@ -21,4 +21,10 @@ public class IntLiteral extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "IntLiteral [value=" + value + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

@@ -28,4 +28,10 @@ public class ArrayAccess extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "ArrayAccess [position=" + position + ", array=" + array + ", getLine()=" + getLine() + ", getColumn()="
+				+ getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

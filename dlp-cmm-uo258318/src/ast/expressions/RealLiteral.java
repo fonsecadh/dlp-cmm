@@ -21,4 +21,10 @@ public class RealLiteral extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "RealLiteral [value=" + value + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

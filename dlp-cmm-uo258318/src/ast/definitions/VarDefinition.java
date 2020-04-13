@@ -16,4 +16,10 @@ public class VarDefinition extends AbstractDefinition implements Statement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "VarDefinition [getLine()=" + getLine() + ", getColumn()=" + getColumn() + ", getName()=" + getName()
+				+ ", getType()=" + getType() + ", getScope()=" + getScope() + ", getOffset()=" + getOffset() + "]";
+	}
+
 }

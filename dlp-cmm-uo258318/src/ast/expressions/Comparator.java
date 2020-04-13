@@ -34,4 +34,10 @@ public class Comparator extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "Comparator [operator=" + operator + ", left=" + left + ", right=" + right + ", getLine()=" + getLine()
+				+ ", getColumn()=" + getColumn() + ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

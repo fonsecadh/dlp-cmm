@@ -50,4 +50,10 @@ public class CharLiteral extends AbstractExpression {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "CharLiteral [value=" + value + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
+				+ ", getLValue()=" + getLValue() + ", getType()=" + getType() + "]";
+	}
+
 }

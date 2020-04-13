@@ -28,4 +28,10 @@ public class Assignment extends AbstractStatement {
 		return v.visit(this, p);
 	}
 
+	@Override
+	public String toString() {
+		return "Assignment [left=" + left + ", right=" + right + ", getLine()=" + getLine() + ", getColumn()="
+				+ getColumn() + "]";
+	}
+
 }
