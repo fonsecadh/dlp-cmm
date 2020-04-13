@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ast.Program;
 import ast.errorhandler.ErrorHandler;
 import ast.types.Type;
+import codegen.OffsetVisitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import parser.CmmLexer;
@@ -58,6 +59,18 @@ public class Main {
 			ErrorHandler.getInstance().clearErrors();
 		} else {
 			System.out.println("No type errors.");
+		}
+		
+		// OffsetVisitor
+		Visitor<Boolean, Void> offsetVisitor = new OffsetVisitor();
+		ast.accept(offsetVisitor, false);
+		System.out.println("Offset Visitor");
+
+		if (ErrorHandler.getInstance().anyErrors()) {
+			ErrorHandler.getInstance().showErrors(System.err);
+			ErrorHandler.getInstance().clearErrors();
+		} else {
+			System.out.println("No offset errors.");
 		}
 
 		// The AST is shown

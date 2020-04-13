@@ -1263,7 +1263,8 @@ public class CmmParser extends Parser {
 					((TypeContext)_localctx).type = type(0);
 					setState(271);
 					((TypeContext)_localctx).id1 = match(ID);
-					 fields.add(new RecordField((((TypeContext)_localctx).id1!=null?((TypeContext)_localctx).id1.getText():null), ((TypeContext)_localctx).type.ast)); 
+					 fields.add(new RecordField(((TypeContext)_localctx).id1.getLine(), ((TypeContext)_localctx).id1.getCharPositionInLine() + 1, 
+													(((TypeContext)_localctx).id1!=null?((TypeContext)_localctx).id1.getText():null), ((TypeContext)_localctx).type.ast)); 
 					setState(278);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
@@ -1274,7 +1275,8 @@ public class CmmParser extends Parser {
 						match(T__2);
 						setState(274);
 						((TypeContext)_localctx).id2 = match(ID);
-						 fields.add(new RecordField((((TypeContext)_localctx).id2!=null?((TypeContext)_localctx).id2.getText():null), ((TypeContext)_localctx).type.ast)); 
+						 fields.add(new RecordField(((TypeContext)_localctx).id2.getLine(), ((TypeContext)_localctx).id2.getCharPositionInLine() + 1, 
+									 			(((TypeContext)_localctx).id2!=null?((TypeContext)_localctx).id2.getText():null), ((TypeContext)_localctx).type.ast)); 
 						}
 						}
 						setState(280);

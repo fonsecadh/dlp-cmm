@@ -28,6 +28,7 @@ import ast.types.ErrorType;
 import ast.types.FunctionType;
 import ast.types.IntType;
 import ast.types.RealType;
+import ast.types.RecordField;
 import ast.types.RecordType;
 import ast.types.VoidType;
 
@@ -188,6 +189,12 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	}
 	
 	public TR visit(VoidType e, TP param) {
+		return null;
+	}
+	
+	@Override
+	public TR visit(RecordField e, TP param) {
+		e.getFieldType().accept(this, param);
 		return null;
 	}
 

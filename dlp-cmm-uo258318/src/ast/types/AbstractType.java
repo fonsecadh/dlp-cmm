@@ -103,7 +103,7 @@ public abstract class AbstractType implements Type {
 			return type;
 		}
 		return new ErrorType(e.getLine(), e.getColumn(),
-				"square brackets operator not supported by type " + type.getName());
+				"square brackets operator not supported by type " + this.getName());
 	}
 
 	@Override

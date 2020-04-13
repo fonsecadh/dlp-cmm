@@ -256,9 +256,11 @@ arguments returns [List<Expression> ast = new ArrayList<Expression>()]:
 
 type returns [Type ast]: 
 	strct='struct' { List<RecordField> fields = new ArrayList<RecordField>(); } 
-		'{' (type id1=ID { fields.add(new RecordField($id1.text, $type.ast)); }
+		'{' (type id1=ID { fields.add(new RecordField($id1.getLine(), $id1.getCharPositionInLine() + 1, 
+								$id1.text, $type.ast)); }
 			 (',' id2=ID
-			 	{ fields.add(new RecordField($id2.text, $type.ast)); }
+			 	{ fields.add(new RecordField($id2.getLine(), $id2.getCharPositionInLine() + 1, 
+			 			$id2.text, $type.ast)); }
 			 )* ';')+ 
 		'}'  { $ast = new RecordType($strct.getLine(), $strct.getCharPositionInLine() + 1, fields); }
 	| ty=type 

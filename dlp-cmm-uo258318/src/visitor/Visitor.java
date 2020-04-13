@@ -28,6 +28,7 @@ import ast.types.ErrorType;
 import ast.types.FunctionType;
 import ast.types.IntType;
 import ast.types.RealType;
+import ast.types.RecordField;
 import ast.types.RecordType;
 import ast.types.VoidType;
 
@@ -69,8 +70,11 @@ public interface Visitor<TP, TR> {
 	TR visit(ErrorType e, TP p);
 	TR visit(FunctionType e, TP param);
 	TR visit(IntType e, TP param);
-	TR visit(RealType e, TP param);
+	TR visit(RealType e, TP param);	
 	TR visit(RecordType e, TP param);
 	TR visit(VoidType e, TP param);
+	
+	// Other
+	TR visit(RecordField e, TP param);
 	
 }
