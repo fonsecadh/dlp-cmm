@@ -70,8 +70,9 @@ public class SymbolTable {
 	 * 				The definition. Null if it is not found.
 	 */
 	public Definition find(String id) {
-		Definition def;
-		for (Map<String, Definition> map : table) {
+		Definition def;		
+		for (int i = table.size() - 1; i >= 0; i--) {
+			Map<String, Definition> map = table.get(i);
 			if (map.containsKey(id)) {
 				def = map.get(id);
 				return def;
