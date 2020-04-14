@@ -162,7 +162,7 @@ expression returns [Expression ast]:
 		  	{ $ast = new ArrayAccess(
 		  			$e1.start.getLine(),
    					$e1.start.getCharPositionInLine() + 1, 
-   					$e1.ast, $e2.ast 
+   					$e2.ast, $e1.ast 
    			); }
 		  | op='-' expression
 		  	{ $ast = new UnaryMinus(

@@ -1091,7 +1091,7 @@ public class CmmParser extends Parser {
 						 ((ExpressionContext)_localctx).ast =  new ArrayAccess(
 						          		  			(((ExpressionContext)_localctx).e1!=null?(((ExpressionContext)_localctx).e1.start):null).getLine(),
 						             					(((ExpressionContext)_localctx).e1!=null?(((ExpressionContext)_localctx).e1.start):null).getCharPositionInLine() + 1, 
-						             					((ExpressionContext)_localctx).e1.ast, ((ExpressionContext)_localctx).e2.ast 
+						             					((ExpressionContext)_localctx).e2.ast, ((ExpressionContext)_localctx).e1.ast 
 						             			); 
 						}
 						break;
