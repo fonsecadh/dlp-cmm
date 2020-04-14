@@ -41,6 +41,11 @@ public class CharType extends AbstractType {
 	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
 		return v.visit(this, p);
 	}
+	
+	@Override
+	public Type arithmetic(Type type, Expression e) {
+		return type == this ? IntType.getInstance() : super.arithmetic(type, e);
+	}
 
 	@Override
 	public Type assign(Type type, Statement e) {
@@ -54,8 +59,11 @@ public class CharType extends AbstractType {
 	public Type cast(Type type, Expression e) {
 		if (type instanceof IntType) {
 			return type;
+		} else if (type instanceof RealType) {
+			return type;
+		} else {
+			return super.cast(type, e);
 		}
-		return super.cast(type, e);
 	}
 
 	@Override
