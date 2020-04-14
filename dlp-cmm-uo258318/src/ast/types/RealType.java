@@ -79,7 +79,7 @@ public class RealType extends AbstractType {
 	@Override
 	public Type ret(Type type, Statement e) {
 		if (type instanceof RealType) {
-			return null;
+			return this;
 		}
 		return super.ret(type, e);
 	}

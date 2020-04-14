@@ -105,7 +105,7 @@ public class IntType extends AbstractType {
 	@Override
 	public Type ret(Type type, Statement e) {
 		if (type instanceof IntType) {
-			return null;
+			return this;
 		}
 		return super.ret(type, e);
 	}
