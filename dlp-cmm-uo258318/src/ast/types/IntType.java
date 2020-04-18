@@ -125,5 +125,10 @@ public class IntType extends AbstractType {
 		return "IntType [getName()=" + getName() + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
 				+ ", numberOfBytes()=" + numberOfBytes() + "]";
 	}
+	
+	@Override
+	public String getSuffix() {
+		return "i";
+	}
 
 }

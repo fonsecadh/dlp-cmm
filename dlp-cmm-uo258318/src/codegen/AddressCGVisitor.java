@@ -1,6 +1,16 @@
 package codegen;
 
-public class AddressCGVisitor {
+import ast.expressions.Variable;
+
+public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
+	
+	// Attributes
+	private CodeGenerator cg = new CodeGenerator();
+
+	@Override
+	protected String getCodeFunctionName() {
+		return "address";
+	}
 	
 	/*
 	 * address[[Variable: expression -> ID]] =
@@ -12,5 +22,10 @@ public class AddressCGVisitor {
 	 * 			<addi>
 	 * 		}
 	 */
+	@Override
+	public Void visit(Variable e, Void param) {
+		e.setCode(cg.pushAddress(e.getDefinition()));
+		return null;
+	}
 
 }

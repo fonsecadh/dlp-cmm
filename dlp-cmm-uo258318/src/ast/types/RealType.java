@@ -99,5 +99,10 @@ public class RealType extends AbstractType {
 		return "RealType [getName()=" + getName() + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
 				+ ", numberOfBytes()=" + numberOfBytes() + "]";
 	}
+	
+	@Override
+	public String getSuffix() {
+		return "f";
+	}
 
 }

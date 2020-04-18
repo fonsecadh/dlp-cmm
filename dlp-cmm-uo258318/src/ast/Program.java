@@ -10,7 +10,8 @@ public class Program implements ASTNode {
 
 	// Attributes
 	private List<Definition> defs;
-	
+	private String code;
+
 	// Constructor
 	public Program(List<Definition> defs) {
 		this.defs = new ArrayList<Definition>(defs);
@@ -25,11 +26,11 @@ public class Program implements ASTNode {
 	public int getColumn() {
 		throw new RuntimeException("This method should not be called in the Program object.");
 	}
-	
+
 	public List<Definition> getDefinitions() {
 		return new ArrayList<Definition>(defs);
 	}
-	
+
 	@Override
 	public <TP, TR> TR accept(Visitor<TP, TR> v, TP p) {
 		return v.visit(this, p);
@@ -38,6 +39,14 @@ public class Program implements ASTNode {
 	@Override
 	public String toString() {
 		return "Program [defs=" + defs + "]";
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

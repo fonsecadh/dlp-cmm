@@ -94,5 +94,10 @@ public class CharType extends AbstractType {
 		return "CharType [getName()=" + getName() + ", getLine()=" + getLine() + ", getColumn()=" + getColumn()
 				+ ", numberOfBytes()=" + numberOfBytes() + "]";
 	}
+	
+	@Override
+	public String getSuffix() {
+		return "b";
+	}
 
 }

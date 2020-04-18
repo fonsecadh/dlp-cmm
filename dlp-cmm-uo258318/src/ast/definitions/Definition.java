@@ -11,5 +11,7 @@ public interface Definition extends ASTNode {
 	void setScope(int scope);
 	int getOffset();
 	void setOffset(int offset);
+	String getCode();
+	void setCode(String code);
 
 }

@@ -28,5 +28,8 @@ public interface Type extends ASTNode {
 	
 	// Code Generation
 	int numberOfBytes();
+	String getSuffix();
+
+	Type convertTo(Type castType);
 
 }

@@ -5,6 +5,7 @@ public abstract class AbstractStatement implements Statement {
 	// Attributes
 	private int line;
 	private int column;
+	private String code;
 
 	// Constructor
 	public AbstractStatement(int line, int column) {
@@ -20,6 +21,16 @@ public abstract class AbstractStatement implements Statement {
 	@Override
 	public int getColumn() {
 		return column;
+	}
+
+	@Override
+	public String getCode() {
+		return code;
+	}
+
+	@Override
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

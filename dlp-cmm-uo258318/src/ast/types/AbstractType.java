@@ -132,5 +132,16 @@ public abstract class AbstractType implements Type {
 	public int numberOfBytes() {
 		return 0;
 	}
+	
+	@Override
+	public String getSuffix() {
+		return null;
+	}
+	
+	@Override
+	public Type convertTo(Type castType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
