@@ -15,7 +15,9 @@ import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
 import ast.statements.Assignment;
+import ast.statements.ReadStatement;
 import ast.statements.Statement;
+import ast.statements.WriteStatement;
 import ast.types.FunctionType;
 import ast.types.Type;
 import symboltable.SymbolTable;
@@ -162,6 +164,38 @@ public class CodeGenerator {
 					+ funcType.getLocalVariableSize() + ", " + funcType.getSizeOfParams();
 			appendMAPLInstruction(retOperator, code);
 		}
+		return code.toString();
+	}
+
+	public String varDefinition(VarDefinition e) {
+		StringBuilder code = new StringBuilder();
+		String comment = e.getType().getName() + " " + e.getName() + "(offset " + e.getOffset() + ")";
+		writeMAPLComment(comment, code);
+		return code.toString();
+	}
+
+	public String read(ReadStatement e) {
+		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getBody().getLine(), code);
+		code.append(e.getBody().getCode());
+		// We perform an input operation in MAPL
+		String inSuffix = "in" + e.getBody().getType().getSuffix();
+		appendMAPLInstruction(inSuffix, code);
+		// We perform a storing operation in MAPL
+		String storeSuffix = "store" + e.getBody().getType().getSuffix();
+		appendMAPLInstruction(storeSuffix, code);
+		return code.toString();
+	}
+
+	public String write(WriteStatement e) {
+		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getBody().getLine(), code);
+		code.append(e.getBody().getCode());
+		// We perform an output operation in MAPL
+		String outSuffix = "out" + e.getBody().getType().getSuffix();
+		appendMAPLInstruction(outSuffix, code);	
 		return code.toString();
 	}
 	

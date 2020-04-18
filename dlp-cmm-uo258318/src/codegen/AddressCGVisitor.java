@@ -12,6 +12,8 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 		return "address";
 	}
 	
+	// Expressions
+	
 	/*
 	 * address[[Variable: expression -> ID]] =
 	 * 		if (expression.definition.scope == SymbolTable.GLOBAL_SCOPE) {

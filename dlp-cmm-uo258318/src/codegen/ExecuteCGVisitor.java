@@ -1,8 +1,11 @@
 package codegen;
 
+import ast.Program;
 import ast.definitions.FuncDefinition;
+import ast.definitions.VarDefinition;
 import ast.statements.Assignment;
 import ast.statements.ReadStatement;
+import ast.statements.WriteStatement;
 import visitor.Visitor;
 
 public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
@@ -25,19 +28,22 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 		return "execute";
 	}
 	
+	// Program
+	
 	/*
-	 * execute[[Assignment: statement -> expression1 expression2]] =
-	 * 		address[[expression1]]
-	 * 		value[[expression2]]
-	 * 		<store> expression1.type.suffix
+	 * execute[[Program: program -> definition+ EOF]] = 
+	 * 		<call main>
+	 * 		<halt>
+	 *		// TODO: Separate - First global variables and then function definitions
+	 * 		definition+.foreach(def -> execute[[def]]) 
 	 */
 	@Override
-	public Void visit(Assignment e, Void param) {
-		e.getLeft().accept(addressCGVisitor, param);
-		e.getRight().accept(valueCGVisitor, param);
-		e.setCode(cg.assignment(e));
-		return null;
+	public Void visit(Program e, Void param) {
+		// TODO Auto-generated method stub
+		return super.visit(e, param);
 	}
+	
+	// Definition
 	
 	/*
 	 * execute[[FuncDefinition: definition -> type ID statement*]] =
@@ -64,39 +70,54 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	}
 	
 	/*
-	 * execute[[ReadStatement: statement -> expression1]] =
-	 * 		value[[expression1]]
-	 * 		<in> statement.type.suffix // Wrong
+	 * execute[[VarDefinition: definition -> type ID]] =
+	 * 		ID < (> definition.offset <)>
 	 */
 	@Override
-	public Void visit(ReadStatement e, Void param) {
-		e.accept(valueCGVisitor, param);
+	public Void visit(VarDefinition e, Void param) {
+		e.setCode(cg.varDefinition(e));
 		return null;
 	}
 	
+	// Statement
+	
 	/*
-	 * execute[[Program: program -> definition+ EOF]] = 
-	 * 		<call main>
-	 * 		<halt>
-	 *		// TODO: Separate - First global variables and then function definitions
-	 * 		definition+.foreach(def -> execute[[def]]) 
+	 * execute[[Assignment: statement -> expression1 expression2]] =
+	 * 		address[[expression1]]
+	 * 		value[[expression2]]
+	 * 		<store> expression1.type.suffix
 	 */
+	@Override
+	public Void visit(Assignment e, Void param) {
+		e.getLeft().accept(addressCGVisitor, param);
+		e.getRight().accept(valueCGVisitor, param);
+		e.setCode(cg.assignment(e));
+		return null;
+	}	
+	
+	/*
+	 * execute[[ReadStatement: statement -> expression1]] =
+	 * 		address[[expression1]]
+	 * 		<in> expression1.type.suffix
+	 * 		<store> expression1.type.suffix
+	 */
+	@Override
+	public Void visit(ReadStatement e, Void param) {
+		e.accept(addressCGVisitor, param);
+		e.setCode(cg.read(e));
+		return null;
+	}	
 	
 	/*
 	 * execute[[WriteStatement: statement -> expression1]] =
 	 * 		value[[expression1]]
-	 * 		<out> statement.type.suffix
+	 * 		<out> expression1.type.suffix
 	 */
-	
-	
-	
-	
-	
-	
-	
-	/*
-	 * execute[[VarDefinition: definition -> type ID]] =
-	 * 		ID < (> definition.offset <)>
-	 */
+	@Override
+	public Void visit(WriteStatement e, Void param) {
+		e.accept(valueCGVisitor, param);
+		e.setCode(cg.write(e));
+		return null;
+	}	
 
 }
