@@ -1,10 +1,12 @@
 package codegen;
 
 import ast.expressions.Arithmetic;
+import ast.expressions.ArrayAccess;
 import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
 import ast.expressions.Comparator;
 import ast.expressions.Conditional;
+import ast.expressions.FieldAccess;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
@@ -27,6 +29,17 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	
 	
 	// Expressions
+	
+	/*
+	 * value[[ArrayAccess: expression1 -> expression2 expression3]] =
+	 * 		address[[exp1]]
+	 * 		<load> exp1.type.suffix
+	 */
+	@Override
+	public Void visit(ArrayAccess e, Void param) {
+		// TODO Auto-generated method stub
+		return super.visit(e, param);
+	}
 	
 	/*
 	 * value[[Arithmetic: expression1 -> expression2 (+|-|*|/) expression3]] =
@@ -115,6 +128,17 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 		// We apply the operation over both expressions
 		e.setCode(cg.conditional(e, e.getType()));
 		return null;
+	}
+	
+	/*
+	 * value[[FieldAccess: expression1 -> expression2 ID]] =
+	 * 		address[[exp1]]
+	 * 		<load > exp1.type.suffix
+	 */
+	@Override
+	public Void visit(FieldAccess e, Void param) {
+		// TODO Auto-generated method stub
+		return super.visit(e, param);
 	}
 	
 	/*

@@ -18,10 +18,12 @@ import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
 import ast.statements.Assignment;
 import ast.statements.ReadStatement;
+import ast.statements.WhileStatement;
 import ast.statements.WriteStatement;
 import ast.types.FunctionType;
 import ast.types.Type;
 import symboltable.SymbolTable;
+import visitor.Visitor;
 
 public class CodeGenerator {
 	
@@ -48,7 +50,7 @@ public class CodeGenerator {
 		operators.put(">=", "ge");
 		operators.put("<=", "le");
 		unaryOperators.put("!", "not");
-		unaryOperators.put("-", "not");
+		unaryOperators.put("-", "not"); // TODO: Wrong, change this. Example (-a: it should be 0 - a)
 	}
 
 	public String pushAddress(Definition d) {
@@ -229,6 +231,15 @@ public class CodeGenerator {
 			def.accept(executeCGVisitor, param);
 			code.append(def.getCode());
 		});
+		return code.toString();
+	}
+
+	public String whileStmt(WhileStatement e, ExecuteCGVisitor executeCGVisitor, Void param,
+			ValueCGVisitor valueCGVisitor) {
+		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getCondition().getLine(), code);
+		// TODO: Finish this method
 		return code.toString();
 	}
 	
