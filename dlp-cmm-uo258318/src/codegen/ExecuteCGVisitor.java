@@ -57,12 +57,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<Parameters>
 	 * 		type.params*.foreach(p -> p.name p.offset);
 	 * 		<Local Variables>
-	 *		for (Statement stmt : statement*) { 
-	 *			if (stmt instanceof VarDefinition) {
-	 *				execute[[(VarDefinition) stmt]]
-	 *			}
-	 *		}
+	 *		statement*.stream().filter(stmt -> stmt instanceof VarDefinition).foreach(vd -> execute[[vd]]);		
 	 *		<enter> definition.type.localVarSize
+	 *		statement*.stream().filter(stmt -> !(stmt instanceof VarDefinition)).foreach(s -> execute[[s]]);
 	 *		if (definition.type.returnType.numberOfBytes == 0) {
 	 *			<ret> definition.type.returnType.numberOfBytes 
 	 *				<, > definition.type.localVarSize

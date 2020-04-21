@@ -164,6 +164,11 @@ public class CodeGenerator {
 		// We allocate memory for the local variables
 		String enterSize = "enter " + funcType.getLocalVariableSize();
 		appendMAPLInstruction(enterSize, code);
+		// We process the body
+		e.getBody().stream().filter(stmt -> !(stmt instanceof VarDefinition)).forEach(ele -> {
+			ele.accept(executeCGVisitor, param);
+			code.append(ele.getCode());
+		});
 		// If there is no explicit return statement
 		if (funcType.getReturnType().numberOfBytes() == 0) {
 			String retOperator = "ret " + funcType.getReturnType().numberOfBytes() + ", "
