@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -5,7 +9,10 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import ast.Program;
 import ast.errorhandler.ErrorHandler;
 import ast.types.Type;
+import codegen.AddressCGVisitor;
+import codegen.ExecuteCGVisitor;
 import codegen.OffsetVisitor;
+import codegen.ValueCGVisitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import parser.CmmLexer;
@@ -72,6 +79,27 @@ public class Main {
 		} else {
 			System.out.println("No offset errors.");
 		}
+		
+		// Address, Value and Execute Visitors
+		ExecuteCGVisitor executeCGVisitor = new ExecuteCGVisitor(args[0]);
+		AddressCGVisitor addressCGVisitor = new AddressCGVisitor();
+		ValueCGVisitor valueCGVisitor = new ValueCGVisitor();		
+		valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
+		executeCGVisitor.setAddressCGVisitor(addressCGVisitor);
+		executeCGVisitor.setValueCGVisitor(valueCGVisitor);		
+		ast.accept(executeCGVisitor, null);
+		
+		System.out.println("Address, Value and Execute Visitors");
+
+		if (ErrorHandler.getInstance().anyErrors()) {
+			ErrorHandler.getInstance().showErrors(System.err);
+			ErrorHandler.getInstance().clearErrors();
+		} else {
+			System.out.println("Code was successfully generated!");
+			BufferedWriter output = new BufferedWriter(new FileWriter(new File("output.mp")));
+			output.write(ast.getCode());
+			output.close();
+		}		
 
 		// The AST is shown
 		IntrospectorModel model = new IntrospectorModel("Program", ast);

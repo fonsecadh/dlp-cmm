@@ -14,6 +14,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	private CodeGenerator cg = new CodeGenerator();
 	private Visitor<Void, Void> addressCGVisitor;
 	private Visitor<Void, Void> valueCGVisitor;
+	private String sourceFile;
+	
+	// Constructor
+	public ExecuteCGVisitor(String sourceFile) {
+		this.sourceFile = sourceFile;
+	}
 	
 	public void setAddressCGVisitor(Visitor<Void, Void> addressCGVisitor) {
 		this.addressCGVisitor = addressCGVisitor;
@@ -33,14 +39,14 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	/*
 	 * execute[[Program: program -> definition+ EOF]] = 
 	 * 		<call main>
-	 * 		<halt>
-	 *		// TODO: Separate - First global variables and then function definitions
-	 * 		definition+.foreach(def -> execute[[def]]) 
+	 * 		<halt>		
+	 * 		definition+.stream().filter(d -> d instanceof VarDefinition).foreach(def -> execute[[def]]) 
+	 * 		definition+.stream().filter(d -> d instanceof FuncDefinition).foreach(def -> execute[[def]])
 	 */
 	@Override
 	public Void visit(Program e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.setCode(cg.program(e, sourceFile, this, param));
+		return null;
 	}
 	
 	// Definition

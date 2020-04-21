@@ -3,10 +3,12 @@ package codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.Arithmetic;
+import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
 import ast.expressions.Comparator;
 import ast.expressions.Conditional;
@@ -16,7 +18,6 @@ import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
 import ast.statements.Assignment;
 import ast.statements.ReadStatement;
-import ast.statements.Statement;
 import ast.statements.WriteStatement;
 import ast.types.FunctionType;
 import ast.types.Type;
@@ -37,7 +38,7 @@ public class CodeGenerator {
 		operators.put("-", "sub");
 		operators.put("*", "mul");
 		operators.put("/", "div");
-		operators.put("%", "add");
+		operators.put("%", "mod");
 		operators.put("&&", "and");
 		operators.put("||", "or");
 		operators.put("==", "eq");
@@ -94,6 +95,15 @@ public class CodeGenerator {
 		return code.toString();
 	}	
 
+	public String cast(Cast e) {
+		StringBuilder code = new StringBuilder();
+		String[] castInstructions = e.getOperand().getType().convertTo(e.getCastType());
+		for (String instr : castInstructions) {
+			appendMAPLInstruction(instr, code);
+		}
+		return code.toString();
+	}
+
 	public String comparator(Comparator e, Type type) {
 		StringBuilder code = new StringBuilder();
 		code.append(e.getLeft().getCode());
@@ -147,14 +157,10 @@ public class CodeGenerator {
 		});
 		// We process the local variables
 		writeMAPLComment("Local Variables", code);
-		// We traverse the body
-		for (Statement stmt : e.getBody()) {
-			if (stmt instanceof VarDefinition) {
-				VarDefinition vd = (VarDefinition) stmt;
-				vd.accept(executeCGVisitor, param);
-				code.append(vd.getCode());
-			}
-		}
+		e.getBody().stream().filter(stmt -> stmt instanceof VarDefinition).forEach(vd -> {
+			vd.accept(executeCGVisitor, param);
+			code.append(vd.getCode());
+		});
 		// We allocate memory for the local variables
 		String enterSize = "enter " + funcType.getLocalVariableSize();
 		appendMAPLInstruction(enterSize, code);
@@ -169,7 +175,7 @@ public class CodeGenerator {
 
 	public String varDefinition(VarDefinition e) {
 		StringBuilder code = new StringBuilder();
-		String comment = e.getType().getName() + " " + e.getName() + "(offset " + e.getOffset() + ")";
+		String comment = e.getType().getName() + " " + e.getName() + " (offset " + e.getOffset() + ")";
 		writeMAPLComment(comment, code);
 		return code.toString();
 	}
@@ -196,6 +202,28 @@ public class CodeGenerator {
 		// We perform an output operation in MAPL
 		String outSuffix = "out" + e.getBody().getType().getSuffix();
 		appendMAPLInstruction(outSuffix, code);	
+		return code.toString();
+	}
+
+	public String program(Program e, String sourceFile, ExecuteCGVisitor executeCGVisitor, Void param) {
+		StringBuilder code = new StringBuilder();
+		// We specify the source file
+		String srcSpecification = "#source \"" + sourceFile + "\"\n";
+		code.append(srcSpecification);
+		// We call the main function
+		appendMAPLInstruction("call main", code);
+		// We stop the execution
+		appendMAPLInstruction("halt", code);
+		// We traverse the global variables to generate their code
+		e.getDefinitions().stream().filter(d -> d instanceof VarDefinition).forEach(def -> {
+			def.accept(executeCGVisitor, param);
+			code.append(def.getCode());
+		});
+		// We traverse the function definitions to generate their code
+		e.getDefinitions().stream().filter(d -> d instanceof FuncDefinition).forEach(def -> {
+			def.accept(executeCGVisitor, param);
+			code.append(def.getCode());
+		});
 		return code.toString();
 	}
 	

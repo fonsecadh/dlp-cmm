@@ -104,5 +104,16 @@ public class RealType extends AbstractType {
 	public String getSuffix() {
 		return "f";
 	}
+	
+	@Override
+	public String[] convertTo(Type castType) {
+		if (castType instanceof IntType) {
+			return new String[] { "f2i" };
+		} else if (castType instanceof CharType) {
+			return new String[] { "f2i", "i2b" };
+		} else {
+			throw new RuntimeException("Unexpected behaviour in RealType's convertTo method");
+		}
+	}
 
 }

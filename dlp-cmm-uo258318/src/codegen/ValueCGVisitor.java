@@ -69,8 +69,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	@Override
 	public Void visit(Cast e, Void param) {
 		e.getOperand().accept(this, param);
-		// TODO: Finish
-		e.getOperand().getType().convertTo(e.getCastType());
+		e.setCode(cg.cast(e));		
 		return null;
 	}
 	

@@ -30,6 +30,6 @@ public interface Type extends ASTNode {
 	int numberOfBytes();
 	String getSuffix();
 
-	Type convertTo(Type castType);
+	String[] convertTo(Type castType);
 
 }

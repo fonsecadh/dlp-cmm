@@ -139,8 +139,7 @@ public abstract class AbstractType implements Type {
 	}
 	
 	@Override
-	public Type convertTo(Type castType) {
-		// TODO Auto-generated method stub
+	public String[] convertTo(Type castType) {
 		return null;
 	}
 

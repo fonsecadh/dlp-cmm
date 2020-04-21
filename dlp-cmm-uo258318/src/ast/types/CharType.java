@@ -99,5 +99,16 @@ public class CharType extends AbstractType {
 	public String getSuffix() {
 		return "b";
 	}
+	
+	@Override
+	public String[] convertTo(Type castType) {
+		if (castType instanceof IntType) {
+			return new String[] { "b2i" };
+		} else if (castType instanceof RealType) {
+			return new String[] { "b2i", "i2f" };
+		} else {
+			throw new RuntimeException("Unexpected behaviour in CharType's convertTo method");
+		}
+	}
 
 }

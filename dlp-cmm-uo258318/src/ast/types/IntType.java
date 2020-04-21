@@ -130,5 +130,16 @@ public class IntType extends AbstractType {
 	public String getSuffix() {
 		return "i";
 	}
+	
+	@Override
+	public String[] convertTo(Type castType) {
+		if (castType instanceof RealType) {
+			return new String[] { "i2f" };
+		} else if (castType instanceof CharType) {
+			return new String[] { "i2b" };
+		} else {
+			throw new RuntimeException("Unexpected behaviour in IntType's convertTo method");
+		}
+	}
 
 }
