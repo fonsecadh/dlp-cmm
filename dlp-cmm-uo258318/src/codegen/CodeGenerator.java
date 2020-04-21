@@ -23,7 +23,6 @@ import ast.statements.WriteStatement;
 import ast.types.FunctionType;
 import ast.types.Type;
 import symboltable.SymbolTable;
-import visitor.Visitor;
 
 public class CodeGenerator {
 	
@@ -154,7 +153,7 @@ public class CodeGenerator {
 		// We process the parameters.
 		writeMAPLComment("Parameters", code);
 		funcType.getParams().forEach(p -> {
-			String paramComment = p.getType().getName() + " " + e.getName() + "(offset " + e.getOffset() + ")";
+			String paramComment = p.getType().getName() + " " + e.getName() + " (offset " + e.getOffset() + ")";
 			writeMAPLComment(paramComment, code);
 		});
 		// We process the local variables
