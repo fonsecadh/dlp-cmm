@@ -3,11 +3,21 @@ package codegen;
 import ast.expressions.ArrayAccess;
 import ast.expressions.FieldAccess;
 import ast.expressions.Variable;
+import visitor.Visitor;
 
 public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 	
 	// Attributes
-	private CodeGenerator cg = new CodeGenerator();
+	private CodeGenerator cg;
+	private Visitor<Void, Void> valueCGVisitor;
+	
+	public void setValueCGVisitor(Visitor<Void, Void> valueCGVisitor) {
+		this.valueCGVisitor = valueCGVisitor;
+	}
+	
+	public void setCodeGenerator(CodeGenerator cg) {
+		this.cg = cg;
+	}	
 
 	@Override
 	protected String getCodeFunctionName() {
@@ -26,8 +36,10 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 */
 	@Override
 	public Void visit(ArrayAccess e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.getArray().accept(this, param);
+		e.getPosition().accept(valueCGVisitor, param);
+		e.setCode(cg.arrayAccess(e));
+		return null;
 	}
 	
 	/*
@@ -38,8 +50,9 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 */
 	@Override
 	public Void visit(FieldAccess e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.getRecord().accept(this, param);
+		e.setCode(cg.fieldAccess(e));
+		return null;
 	}
 	
 	/*

@@ -15,7 +15,7 @@ import visitor.Visitor;
 public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	
 	// Attributes
-	private CodeGenerator cg = new CodeGenerator();
+	private CodeGenerator cg;
 	private Visitor<Void, Void> addressCGVisitor;
 	private Visitor<Void, Void> valueCGVisitor;
 	private String sourceFile;
@@ -32,6 +32,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	public void setValueCGVisitor(Visitor<Void, Void> valueCGVisitor) {
 		this.valueCGVisitor = valueCGVisitor;
 	}
+
+	public void setCodeGenerator(CodeGenerator cg) {
+		this.cg = cg;
+	}	
 
 	@Override
 	protected String getCodeFunctionName() {
@@ -115,22 +119,23 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 */
 	@Override
 	public Void visit(IfStatement e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.getCondition().accept(valueCGVisitor, param);
+		e.setCode(cg.ifStmt(e, this, param));
+		return null;
 	}
 	
 	/*
 	 * execute[[Invocation: statement -> expression1 expression2*]] =
 	 * 		expression2*.foreach(p -> value[[p]])
 	 * 		<call > expression1.name
-	 * 		if (expression1.type.returnType.equals(VoidType.getInstance().getName())) { // TODO: instanceof
+	 * 		if (expression1.type.returnType instanceof VoidType) {
 	 * 			<pop> expression1.type.returnType.suffix
 	 * 		}
 	 */
 	@Override
 	public Void visit(Invocation e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.setCode(cg.invocationStmt(e, valueCGVisitor, param));
+		return null;
 	}
 	
 	/*
@@ -156,8 +161,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 */
 	@Override
 	public Void visit(ReturnStatement e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.getBody().accept(valueCGVisitor, param);
+		// TODO: Pass as parameters
+		return null;
 	}
 	
 	/*
@@ -186,6 +192,6 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 		e.accept(valueCGVisitor, param);
 		e.setCode(cg.write(e));
 		return null;
-	}	
+	}
 
 }

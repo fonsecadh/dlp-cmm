@@ -78,5 +78,9 @@ public class RecordType extends AbstractType {
 		return "RecordType [line=" + line + ", column=" + column + ", fields=" + fields + ", getName()=" + getName()
 				+ ", numberOfBytes()=" + numberOfBytes() + "]";
 	}
+
+	public RecordField getField(String fieldName) {
+		return fields.stream().filter(f -> f.getFieldName().equals(fieldName)).findFirst().get();
+	}
 	
 }

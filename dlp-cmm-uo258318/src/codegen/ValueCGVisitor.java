@@ -1,5 +1,6 @@
 package codegen;
 
+import ast.Invocation;
 import ast.expressions.Arithmetic;
 import ast.expressions.ArrayAccess;
 import ast.expressions.Cast;
@@ -15,12 +16,16 @@ import visitor.Visitor;
 public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	
 	// Attributes
-	private CodeGenerator cg = new CodeGenerator();
+	private CodeGenerator cg;
 	private Visitor<Void, Void> addressCGVisitor;
 	
 	public void setAddressCGVisitor(Visitor<Void, Void> addressCGVisitor) {
 		this.addressCGVisitor = addressCGVisitor;
 	}
+	
+	public void setCodeGenerator(CodeGenerator cg) {
+		this.cg = cg;
+	}	
 
 	@Override
 	protected String getCodeFunctionName() {
@@ -37,8 +42,9 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 */
 	@Override
 	public Void visit(ArrayAccess e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.accept(addressCGVisitor, param);
+		e.setCode(cg.arrayAccessValue(e));
+		return null;
 	}
 	
 	/*
@@ -133,12 +139,24 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	/*
 	 * value[[FieldAccess: expression1 -> expression2 ID]] =
 	 * 		address[[exp1]]
-	 * 		<load > exp1.type.suffix
+	 * 		<load> exp1.type.suffix
 	 */
 	@Override
 	public Void visit(FieldAccess e, Void param) {
-		// TODO Auto-generated method stub
-		return super.visit(e, param);
+		e.accept(addressCGVisitor, param);
+		e.setCode(cg.fieldAccessValue(e));
+		return null;
+	}
+	
+	/*
+	 * value[[Invocation: statement -> expression1 expression2*]] =
+	 * 		expression2*.foreach(p -> value[[p]])
+	 * 		<call > expression1.name
+	 */
+	@Override
+	public Void visit(Invocation e, Void param) {
+		e.setCode(cg.invocationExp(e, this, param));
+		return null;
 	}
 	
 	/*

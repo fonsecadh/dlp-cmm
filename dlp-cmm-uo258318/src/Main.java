@@ -10,6 +10,7 @@ import ast.Program;
 import ast.errorhandler.ErrorHandler;
 import ast.types.Type;
 import codegen.AddressCGVisitor;
+import codegen.CodeGenerator;
 import codegen.ExecuteCGVisitor;
 import codegen.OffsetVisitor;
 import codegen.ValueCGVisitor;
@@ -87,6 +88,12 @@ public class Main {
 		valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
 		executeCGVisitor.setAddressCGVisitor(addressCGVisitor);
 		executeCGVisitor.setValueCGVisitor(valueCGVisitor);		
+		// Code generator
+		CodeGenerator cg = new CodeGenerator();
+		executeCGVisitor.setCodeGenerator(cg);
+		valueCGVisitor.setCodeGenerator(cg);
+		addressCGVisitor.setCodeGenerator(cg);
+		// We accept the Execute visitor
 		ast.accept(executeCGVisitor, null);
 		
 		System.out.println("Address, Value and Execute Visitors");

@@ -3,32 +3,40 @@ package codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import ast.Invocation;
 import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.Arithmetic;
+import ast.expressions.ArrayAccess;
 import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
 import ast.expressions.Comparator;
 import ast.expressions.Conditional;
 import ast.expressions.Expression;
+import ast.expressions.FieldAccess;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
 import ast.statements.Assignment;
+import ast.statements.IfStatement;
 import ast.statements.ReadStatement;
 import ast.statements.WhileStatement;
 import ast.statements.WriteStatement;
 import ast.types.FunctionType;
+import ast.types.RecordType;
 import ast.types.Type;
+import ast.types.VoidType;
 import symboltable.SymbolTable;
+import visitor.Visitor;
 
 public class CodeGenerator {
 	
 	// Attributes
 	private Map<String, String> operators = new HashMap<String, String>();
 	private Map<String, String> unaryOperators = new HashMap<String, String>();
+	private int label = 0;
 	
 	public CodeGenerator() {
 		loadOperators();
@@ -238,10 +246,140 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getCondition().getLine(), code);
-		// TODO: Finish this method
+		int labelNumber = getLabels(2);
+		// We create the first label
+		String firstLabel = "label" + labelNumber + ":";
+		appendMAPLInstruction(firstLabel, code);		
+		// We get the value of the condition
+		e.getCondition().accept(valueCGVisitor, param);
+		// We append the obtained code
+		code.append(e.getCondition().getCode());		
+		// We add a jump if zero to the end of the While statement
+		String jzEnd = "jz label" + (labelNumber + 1);
+		appendMAPLInstruction(jzEnd, code);		
+		// We traverse the body to get the code of its elements
+		e.getBody().forEach(element -> {
+			// We get the code of the element
+			element.accept(executeCGVisitor, param);
+			// We append the obtained code
+			code.append(element.getCode());
+		});		
+		// We add a jump label to the start of the While statement
+		String jmpStart = "jmp label" + labelNumber;
+		appendMAPLInstruction(jmpStart, code);		
+		// We create the label for the end of the While statement
+		String endLabel = "label" + (labelNumber + 1) + ":";
+		appendMAPLInstruction(endLabel, code);
+		return code.toString();
+	}
+
+	public String ifStmt(IfStatement e, ExecuteCGVisitor executeCGVisitor, Void param) {
+		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getCondition().getLine(), code);
+		int labelNumber = getLabels(2);
+		// We append the value of the condition
+		code.append(e.getCondition().getCode());
+		// We add a jump if zero to else label instruction
+		String jzLabelNumber = "jz label" + labelNumber;
+		appendMAPLInstruction(jzLabelNumber, code);
+		// We traverse the If Part elements to get their code
+		e.getIfPart().forEach(element -> {
+			element.accept(executeCGVisitor, param);
+			code.append(element.getCode());
+		});
+		// We add a jump to the end of the IfElse statement
+		String jmpLabelNumber = "jmp label" + (labelNumber + 1);
+		appendMAPLInstruction(jmpLabelNumber, code);
+		// We add the else label
+		String elseLabel = "label" + labelNumber + ":";
+		appendMAPLInstruction(elseLabel, code);
+		// We traverse the Else Part elements to get their code
+		e.getElsePart().forEach(element -> {
+			element.accept(executeCGVisitor, param);
+			code.append(element.getCode());
+		});
+		// We create the label for the end of the IfElse statement
+		String endLabel = "label" + (labelNumber + 1) + ":";
+		appendMAPLInstruction(endLabel, code);
+		return code.toString();
+	}
+
+	public String arrayAccess(ArrayAccess e) {
+		StringBuilder code = new StringBuilder();
+		// We append the address of the array
+		code.append(e.getArray().getCode());
+		// We append the value of the position
+		code.append(e.getPosition().getCode());
+		// We compute the address of the position	
+		String pushiBytes = "pushi " + e.getType().numberOfBytes();
+		appendMAPLInstruction(pushiBytes, code);
+		appendMAPLInstruction("muli", code);
+		appendMAPLInstruction("addi", code);
+		return code.toString();
+	}
+
+	public String fieldAccess(FieldAccess e) {
+		StringBuilder code = new StringBuilder();
+		// We append the address of the record
+		code.append(e.getRecord().getCode());
+		// We get the offset of the record field
+		int fieldOffset = ((RecordType) e.getRecord().getType()).getField(e.getFieldName()).getOffset();
+		// We perform the addition of the address of 
+		// the record with the offset of the field
+		String pushiOffset = "pushi " + fieldOffset;
+		appendMAPLInstruction(pushiOffset, code);
+		appendMAPLInstruction("addi", code);
+		return code.toString();
+	}
+
+	public String arrayAccessValue(ArrayAccess e) {
+		StringBuilder code = new StringBuilder();
+		// We append the address of the array access
+		code.append(e.getCode());
+		// We load the value stored in the address
+		String loadSuffix = "load" + e.getType().getSuffix();
+		appendMAPLInstruction(loadSuffix, code);
+		return code.toString();
+	}
+
+	public String fieldAccessValue(FieldAccess e) {
+		StringBuilder code = new StringBuilder();
+		// We append the address of the field access
+		code.append(e.getCode());
+		// We perform a loading operation in MAPL
+		String loadSuffix = "load" + e.getType().getSuffix();
+		appendMAPLInstruction(loadSuffix, code);
 		return code.toString();
 	}
 	
+	public String invocationExp(Invocation e, Visitor<Void, Void> valueCGVisitor, Void param) {
+		StringBuilder code = new StringBuilder();
+		// We traverse the parameters to obtain their value
+		e.getParams().forEach(p -> {
+			p.accept(valueCGVisitor, param);
+			code.append(p.getCode());
+		});
+		// We perform the calling operation
+		String callFuncName = "call " + e.getVariable().getName();
+		appendMAPLInstruction(callFuncName, code);
+		return code.toString();
+	}
+
+	public String invocationStmt(Invocation e, Visitor<Void, Void> valueCGVisitor, Void param) {
+		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getLine(), code);
+		// We append the value of the invocation
+		code.append(invocationExp(e, valueCGVisitor, param));
+		// We check if the function returns something
+		if (((FunctionType) e.getVariable().getType()).getReturnType() instanceof VoidType) {
+			String popSuffix = "pop" + ((FunctionType) e.getVariable().getType()).getReturnType().getSuffix();
+			appendMAPLInstruction(popSuffix, code);
+		}
+		return code.toString();
+	}
+
 	/**
 	 * Appends a MAPL instruction to a given StringBuilder.
 	 * 
@@ -310,6 +448,21 @@ public class CodeGenerator {
 			throw new IllegalArgumentException("Unary operator " + uniOperator + " not supported in MAPL.");
 		}
 		return unaryOperators.get(uniOperator);
+	}
+	
+	/**
+	 * Gets current label and reserves other labels for
+	 * the current node.
+	 * 
+	 * @param reserved
+	 * 			An integer representing the number of labels to be reserved.
+	 * @return
+	 * 			The current label.
+	 */
+	private int getLabels(int reserved) {
+		int aux = label;
+		label += reserved;
+		return aux;
 	}
 	
 }
