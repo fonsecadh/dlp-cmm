@@ -18,6 +18,8 @@ import ast.expressions.Expression;
 import ast.expressions.FieldAccess;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
+import ast.expressions.UnaryMinus;
+import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import ast.statements.Assignment;
 import ast.statements.IfStatement;
@@ -57,7 +59,7 @@ public class CodeGenerator {
 		operators.put(">=", "ge");
 		operators.put("<=", "le");
 		unaryOperators.put("!", "not");
-		unaryOperators.put("-", "not"); // TODO: Wrong, change this. Example (-a: it should be 0 - a)
+		unaryOperators.put("-", "sub");
 	}
 
 	public String pushAddress(Definition d) {
@@ -396,6 +398,33 @@ public class CodeGenerator {
 		// We perform the return operation in MAPL
 		String retOp = "ret " + bytesReturnType + ", " + bytesLocalVars + ", " + bytesParams;
 		appendMAPLInstruction(retOp, code);
+		return code.toString();
+	}
+
+	public String unaryMinus(UnaryMinus e, ValueCGVisitor valueCGVisitor, Definition param) {
+		StringBuilder code = new StringBuilder();
+		// We push zero in the stack
+		String pushZero = "push" + e.getOperand().getType().getSuffix() + " 0";
+		appendMAPLInstruction(pushZero, code);
+		// We get the value of the operand
+		e.getOperand().accept(valueCGVisitor, param);
+		// We append the obtained code
+		code.append(e.getOperand().getCode());
+		// We add the sub instruction
+		String op = getMAPLUnaryOperator("-") + e.getOperand().getType().getSuffix();
+		appendMAPLInstruction(op, code);
+		return code.toString();
+	}
+
+	public String unaryNot(UnaryNot e, ValueCGVisitor valueCGVisitor, Definition param) {
+		StringBuilder code = new StringBuilder();
+		// We get the value of the operand
+		e.getOperand().accept(valueCGVisitor, param);
+		// We append the obtained code
+		code.append(e.getOperand().getCode());
+		// We add the not instruction
+		String op = getMAPLUnaryOperator("!");
+		appendMAPLInstruction(op, code);
 		return code.toString();
 	}
 

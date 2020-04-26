@@ -11,6 +11,8 @@ import ast.expressions.Conditional;
 import ast.expressions.FieldAccess;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
+import ast.expressions.UnaryMinus;
+import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import visitor.Visitor;
 
@@ -177,6 +179,29 @@ public class ValueCGVisitor extends AbstractCGVisitor<Definition, Void> {
 	@Override
 	public Void visit(RealLiteral e, Definition param) {
 		e.setCode(cg.constant(e));
+		return null;
+	}
+	
+	/*
+	 * value[[UnaryMinus: expression1 -> expression2]] =
+	 * 		<push> expression2.type.suffix < 0>
+	 * 		value[[expression2]]
+	 * 		<sub> expression2.type.suffix
+	 */
+	@Override
+	public Void visit(UnaryMinus e, Definition param) {
+		e.setCode(cg.unaryMinus(e, this, param));
+		return null;
+	}
+	
+	/*
+	 * value[[UnaryNot: expression1 -> expression2]] =
+	 * 		value[[expression2]]
+	 * 		<not>
+	 */
+	@Override
+	public Void visit(UnaryNot e, Definition param) {
+		e.setCode(cg.unaryNot(e, this, param));
 		return null;
 	}
 	
