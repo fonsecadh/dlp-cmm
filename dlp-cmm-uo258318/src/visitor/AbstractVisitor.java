@@ -131,6 +131,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	
 	public TR visit(Invocation e, TP param) {
 		e.getParams().forEach(p -> p.accept(this, param));
+		e.getVariable().accept(this, param);
 		return null;
 	}
 	

@@ -1,17 +1,18 @@
 package codegen;
 
+import ast.definitions.Definition;
 import ast.expressions.ArrayAccess;
 import ast.expressions.FieldAccess;
 import ast.expressions.Variable;
 import visitor.Visitor;
 
-public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
+public class AddressCGVisitor extends AbstractCGVisitor<Definition, Void> {
 	
 	// Attributes
 	private CodeGenerator cg;
-	private Visitor<Void, Void> valueCGVisitor;
+	private Visitor<Definition, Void> valueCGVisitor;
 	
-	public void setValueCGVisitor(Visitor<Void, Void> valueCGVisitor) {
+	public void setValueCGVisitor(Visitor<Definition, Void> valueCGVisitor) {
 		this.valueCGVisitor = valueCGVisitor;
 	}
 	
@@ -35,7 +36,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<addi>
 	 */
 	@Override
-	public Void visit(ArrayAccess e, Void param) {
+	public Void visit(ArrayAccess e, Definition param) {
 		e.getArray().accept(this, param);
 		e.getPosition().accept(valueCGVisitor, param);
 		e.setCode(cg.arrayAccess(e));
@@ -49,7 +50,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<addi>
 	 */
 	@Override
-	public Void visit(FieldAccess e, Void param) {
+	public Void visit(FieldAccess e, Definition param) {
 		e.getRecord().accept(this, param);
 		e.setCode(cg.fieldAccess(e));
 		return null;
@@ -66,7 +67,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		}
 	 */
 	@Override
-	public Void visit(Variable e, Void param) {
+	public Void visit(Variable e, Definition param) {
 		e.setCode(cg.pushAddress(e.getDefinition()));
 		return null;
 	}

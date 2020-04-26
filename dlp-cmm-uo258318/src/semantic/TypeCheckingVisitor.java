@@ -22,6 +22,7 @@ import ast.statements.ReadStatement;
 import ast.statements.ReturnStatement;
 import ast.statements.WhileStatement;
 import ast.statements.WriteStatement;
+import ast.types.CharType;
 import ast.types.ErrorType;
 import ast.types.FunctionType;
 import ast.types.IntType;
@@ -60,6 +61,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 	public Void visit(CharLiteral e, Type param) {
 		super.visit(e, param);
 		e.setLValue(false);
+		e.setType(CharType.getInstance());
 		return null;
 	}
 

@@ -84,7 +84,8 @@ public class Main {
 		// Address, Value and Execute Visitors
 		ExecuteCGVisitor executeCGVisitor = new ExecuteCGVisitor(args[0]);
 		AddressCGVisitor addressCGVisitor = new AddressCGVisitor();
-		ValueCGVisitor valueCGVisitor = new ValueCGVisitor();		
+		ValueCGVisitor valueCGVisitor = new ValueCGVisitor();	
+		addressCGVisitor.setValueCGVisitor(valueCGVisitor);
 		valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
 		executeCGVisitor.setAddressCGVisitor(addressCGVisitor);
 		executeCGVisitor.setValueCGVisitor(valueCGVisitor);		

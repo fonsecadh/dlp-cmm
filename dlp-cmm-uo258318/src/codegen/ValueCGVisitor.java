@@ -1,6 +1,7 @@
 package codegen;
 
 import ast.Invocation;
+import ast.definitions.Definition;
 import ast.expressions.Arithmetic;
 import ast.expressions.ArrayAccess;
 import ast.expressions.Cast;
@@ -13,13 +14,13 @@ import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
 import visitor.Visitor;
 
-public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
+public class ValueCGVisitor extends AbstractCGVisitor<Definition, Void> {
 	
 	// Attributes
 	private CodeGenerator cg;
-	private Visitor<Void, Void> addressCGVisitor;
+	private Visitor<Definition, Void> addressCGVisitor;
 	
-	public void setAddressCGVisitor(Visitor<Void, Void> addressCGVisitor) {
+	public void setAddressCGVisitor(Visitor<Definition, Void> addressCGVisitor) {
 		this.addressCGVisitor = addressCGVisitor;
 	}
 	
@@ -41,7 +42,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<load> exp1.type.suffix
 	 */
 	@Override
-	public Void visit(ArrayAccess e, Void param) {
+	public Void visit(ArrayAccess e, Definition param) {
 		e.accept(addressCGVisitor, param);
 		e.setCode(cg.arrayAccessValue(e));
 		return null;
@@ -60,7 +61,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		}
 	 */
 	@Override
-	public Void visit(Arithmetic e, Void param) {
+	public Void visit(Arithmetic e, Definition param) {
 		// We obtain the value of the left expression
 		e.getLeft().accept(this, param);			
 		// We obtain the value of the right expression
@@ -75,7 +76,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<pushb> expression.value
 	 */
 	@Override
-	public Void visit(CharLiteral e, Void param) {
+	public Void visit(CharLiteral e, Definition param) {
 		e.setCode(cg.constant(e));
 		return null;
 	}
@@ -86,7 +87,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		expression2.type.convertTo(type)
 	 */
 	@Override
-	public Void visit(Cast e, Void param) {
+	public Void visit(Cast e, Definition param) {
 		e.getOperand().accept(this, param);
 		e.setCode(cg.cast(e));		
 		return null;
@@ -106,7 +107,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		}
 	 */
 	@Override
-	public Void visit(Comparator e, Void param) {
+	public Void visit(Comparator e, Definition param) {
 		// We obtain the value of the left expression
 		e.getLeft().accept(this, param);			
 		// We obtain the value of the right expression
@@ -126,7 +127,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		}
 	 */
 	@Override
-	public Void visit(Conditional e, Void param) {
+	public Void visit(Conditional e, Definition param) {
 		// We obtain the value of the left expression
 		e.getLeft().accept(this, param);			
 		// We obtain the value of the right expression
@@ -142,7 +143,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<load> exp1.type.suffix
 	 */
 	@Override
-	public Void visit(FieldAccess e, Void param) {
+	public Void visit(FieldAccess e, Definition param) {
 		e.accept(addressCGVisitor, param);
 		e.setCode(cg.fieldAccessValue(e));
 		return null;
@@ -154,7 +155,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<call > expression1.name
 	 */
 	@Override
-	public Void visit(Invocation e, Void param) {
+	public Void visit(Invocation e, Definition param) {
 		e.setCode(cg.invocationExp(e, this, param));
 		return null;
 	}
@@ -164,7 +165,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<pushi> expression.value
 	 */
 	@Override
-	public Void visit(IntLiteral e, Void param) {
+	public Void visit(IntLiteral e, Definition param) {
 		e.setCode(cg.constant(e));
 		return null;
 	}
@@ -174,7 +175,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<pushf> expression.value
 	 */
 	@Override
-	public Void visit(RealLiteral e, Void param) {
+	public Void visit(RealLiteral e, Definition param) {
 		e.setCode(cg.constant(e));
 		return null;
 	}
@@ -185,7 +186,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<load> expression.type.suffix
 	 */	
 	@Override
-	public Void visit(Variable e, Void param) {
+	public Void visit(Variable e, Definition param) {
 		e.accept(addressCGVisitor, param);
 		e.setCode(cg.variableValue(e));
 		return null;

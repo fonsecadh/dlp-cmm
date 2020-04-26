@@ -2,6 +2,7 @@ package codegen;
 
 import ast.Invocation;
 import ast.Program;
+import ast.definitions.Definition;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.statements.Assignment;
@@ -12,12 +13,12 @@ import ast.statements.WhileStatement;
 import ast.statements.WriteStatement;
 import visitor.Visitor;
 
-public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
+public class ExecuteCGVisitor extends AbstractCGVisitor<Definition, Void> {
 	
 	// Attributes
 	private CodeGenerator cg;
-	private Visitor<Void, Void> addressCGVisitor;
-	private Visitor<Void, Void> valueCGVisitor;
+	private Visitor<Definition, Void> addressCGVisitor;
+	private Visitor<Definition, Void> valueCGVisitor;
 	private String sourceFile;
 	
 	// Constructor
@@ -25,11 +26,11 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 		this.sourceFile = sourceFile;
 	}
 	
-	public void setAddressCGVisitor(Visitor<Void, Void> addressCGVisitor) {
+	public void setAddressCGVisitor(Visitor<Definition, Void> addressCGVisitor) {
 		this.addressCGVisitor = addressCGVisitor;
 	}
 	
-	public void setValueCGVisitor(Visitor<Void, Void> valueCGVisitor) {
+	public void setValueCGVisitor(Visitor<Definition, Void> valueCGVisitor) {
 		this.valueCGVisitor = valueCGVisitor;
 	}
 
@@ -52,7 +53,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		definition+.stream().filter(d -> d instanceof FuncDefinition).foreach(def -> execute[[def]])
 	 */
 	@Override
-	public Void visit(Program e, Void param) {
+	public Void visit(Program e, Definition param) {
 		e.setCode(cg.program(e, sourceFile, this, param));
 		return null;
 	}
@@ -75,8 +76,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 *		}
 	 */
 	@Override
-	public Void visit(FuncDefinition e, Void param) {
-		e.setCode(cg.functionDefinition(e, this, param));
+	public Void visit(FuncDefinition e, Definition param) {
+		e.setCode(cg.functionDefinition(e, this, e));
 		return null;
 	}
 	
@@ -85,7 +86,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		ID < (> definition.offset <)>
 	 */
 	@Override
-	public Void visit(VarDefinition e, Void param) {
+	public Void visit(VarDefinition e, Definition param) {
 		e.setCode(cg.varDefinition(e));
 		return null;
 	}
@@ -99,7 +100,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<store> expression1.type.suffix
 	 */
 	@Override
-	public Void visit(Assignment e, Void param) {
+	public Void visit(Assignment e, Definition param) {
 		e.getLeft().accept(addressCGVisitor, param);
 		e.getRight().accept(valueCGVisitor, param);
 		e.setCode(cg.assignment(e));
@@ -118,7 +119,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<label> labelNumber + 1 <:>
 	 */
 	@Override
-	public Void visit(IfStatement e, Void param) {
+	public Void visit(IfStatement e, Definition param) {
 		e.getCondition().accept(valueCGVisitor, param);
 		e.setCode(cg.ifStmt(e, this, param));
 		return null;
@@ -133,8 +134,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		}
 	 */
 	@Override
-	public Void visit(Invocation e, Void param) {
-		e.setCode(cg.invocationStmt(e, valueCGVisitor, param));
+	public Void visit(Invocation e, Definition param) {
+		e.setCode(cg.invocationStmt(e, (ValueCGVisitor) valueCGVisitor, param));
 		return null;
 	}
 	
@@ -145,8 +146,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<store> expression1.type.suffix
 	 */
 	@Override
-	public Void visit(ReadStatement e, Void param) {
-		e.accept(addressCGVisitor, param);
+	public Void visit(ReadStatement e, Definition param) {
+		e.getBody().accept(addressCGVisitor, param);
 		e.setCode(cg.read(e));
 		return null;
 	}	
@@ -154,15 +155,15 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	/*
 	 * execute[[ReturnStatement: statement -> expression1]] =
 	 * 		value[[expression1]]
-	 * 		Type funcType = activeFunction.type // The function that is currently being processed
+	 * 		Type funcType = param.type 
 	 * 		<ret > funcType.returnType.numberOfBytes 
 	 * 			<, > funcType.localVariableSize 
-	 * 			<, > funcType.getSizeOfParams() // TODO: PASS AS PARAMETERS!
+	 * 			<, > funcType.getSizeOfParams()
 	 */
 	@Override
-	public Void visit(ReturnStatement e, Void param) {
+	public Void visit(ReturnStatement e, Definition param) {
 		e.getBody().accept(valueCGVisitor, param);
-		// TODO: Pass as parameters
+		e.setCode(cg.retStmt(e, param));
 		return null;
 	}
 	
@@ -177,7 +178,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<label> labelNumber + 1 <:> 		
 	 */
 	@Override
-	public Void visit(WhileStatement e, Void param) {
+	public Void visit(WhileStatement e, Definition param) {
 		e.setCode(cg.whileStmt(e, this, param, (ValueCGVisitor) valueCGVisitor));
 		return null;
 	}
@@ -188,8 +189,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Void, Void> {
 	 * 		<out> expression1.type.suffix
 	 */
 	@Override
-	public Void visit(WriteStatement e, Void param) {
-		e.accept(valueCGVisitor, param);
+	public Void visit(WriteStatement e, Definition param) {
+		e.getBody().accept(valueCGVisitor, param);
 		e.setCode(cg.write(e));
 		return null;
 	}

@@ -22,6 +22,7 @@ import ast.expressions.Variable;
 import ast.statements.Assignment;
 import ast.statements.IfStatement;
 import ast.statements.ReadStatement;
+import ast.statements.ReturnStatement;
 import ast.statements.WhileStatement;
 import ast.statements.WriteStatement;
 import ast.types.FunctionType;
@@ -29,7 +30,6 @@ import ast.types.RecordType;
 import ast.types.Type;
 import ast.types.VoidType;
 import symboltable.SymbolTable;
-import visitor.Visitor;
 
 public class CodeGenerator {
 	
@@ -151,7 +151,7 @@ public class CodeGenerator {
 		return code.toString();
 	}	
 
-	public String functionDefinition(FuncDefinition e, ExecuteCGVisitor executeCGVisitor, Void param) {
+	public String functionDefinition(FuncDefinition e, ExecuteCGVisitor executeCGVisitor, Definition param) {
 		StringBuilder code = new StringBuilder();
 		// We get the function type
 		FunctionType funcType = (FunctionType) e.getType();
@@ -219,7 +219,7 @@ public class CodeGenerator {
 		return code.toString();
 	}
 
-	public String program(Program e, String sourceFile, ExecuteCGVisitor executeCGVisitor, Void param) {
+	public String program(Program e, String sourceFile, ExecuteCGVisitor executeCGVisitor, Definition param) {
 		StringBuilder code = new StringBuilder();
 		// We specify the source file
 		String srcSpecification = "#source \"" + sourceFile + "\"\n";
@@ -241,7 +241,7 @@ public class CodeGenerator {
 		return code.toString();
 	}
 
-	public String whileStmt(WhileStatement e, ExecuteCGVisitor executeCGVisitor, Void param,
+	public String whileStmt(WhileStatement e, ExecuteCGVisitor executeCGVisitor, Definition param,
 			ValueCGVisitor valueCGVisitor) {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
@@ -273,7 +273,7 @@ public class CodeGenerator {
 		return code.toString();
 	}
 
-	public String ifStmt(IfStatement e, ExecuteCGVisitor executeCGVisitor, Void param) {
+	public String ifStmt(IfStatement e, ExecuteCGVisitor executeCGVisitor, Definition param) {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getCondition().getLine(), code);
@@ -353,7 +353,7 @@ public class CodeGenerator {
 		return code.toString();
 	}
 	
-	public String invocationExp(Invocation e, Visitor<Void, Void> valueCGVisitor, Void param) {
+	public String invocationExp(Invocation e, ValueCGVisitor valueCGVisitor, Definition param) {
 		StringBuilder code = new StringBuilder();
 		// We traverse the parameters to obtain their value
 		e.getParams().forEach(p -> {
@@ -366,7 +366,7 @@ public class CodeGenerator {
 		return code.toString();
 	}
 
-	public String invocationStmt(Invocation e, Visitor<Void, Void> valueCGVisitor, Void param) {
+	public String invocationStmt(Invocation e, ValueCGVisitor valueCGVisitor, Definition param) {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getLine(), code);
@@ -377,6 +377,25 @@ public class CodeGenerator {
 			String popSuffix = "pop" + ((FunctionType) e.getVariable().getType()).getReturnType().getSuffix();
 			appendMAPLInstruction(popSuffix, code);
 		}
+		return code.toString();
+	}
+
+	public String retStmt(ReturnStatement e, Definition param) {
+		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getBody().getLine(), code);
+		// We append the value of the body
+		code.append(e.getBody().getCode());
+		// We get the function type of the active function
+		FunctionType funcType = (FunctionType) param.getType();
+		// We calculate the bytes for the
+		// return type, local variables and parameters
+		int bytesReturnType = funcType.getReturnType().numberOfBytes();
+		int bytesLocalVars = funcType.getLocalVariableSize();
+		int bytesParams = funcType.getSizeOfParams();
+		// We perform the return operation in MAPL
+		String retOp = "ret " + bytesReturnType + ", " + bytesLocalVars + ", " + bytesParams;
+		appendMAPLInstruction(retOp, code);
 		return code.toString();
 	}
 
