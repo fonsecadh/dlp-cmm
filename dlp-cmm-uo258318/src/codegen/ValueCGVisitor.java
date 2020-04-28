@@ -53,9 +53,14 @@ public class ValueCGVisitor extends AbstractCGVisitor<Definition, Void> {
 	/*
 	 * value[[Arithmetic: expression1 -> expression2 (+|-|*|/) expression3]] =
 	 * 		value[[expression2]]
+	 *		if (exp2.type instanceof CharType && exp3.type instanceof CharType) {
+	 *			<b2i>
+	 *		}
 	 * 		value[[expression3]]
-	 * 		switch (expression1.operator) { 
-	 * 			// TODO: This approach does not work for chars
+	 * 		if (exp3.type instanceof CharType && exp2.type instanceof CharType) {
+	 *			<b2i>
+	 *		}
+	 * 		switch (expression1.operator) { 			
 	 * 			case "+": <add> expression1.type.suffix break;
 	 * 			case "-": <sub> expression1.type.suffix break;
 	 * 			case "*": <mul> expression1.type.suffix break;

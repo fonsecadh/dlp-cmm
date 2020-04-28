@@ -27,6 +27,7 @@ import ast.statements.ReadStatement;
 import ast.statements.ReturnStatement;
 import ast.statements.WhileStatement;
 import ast.statements.WriteStatement;
+import ast.types.CharType;
 import ast.types.FunctionType;
 import ast.types.RecordType;
 import ast.types.Type;
@@ -82,7 +83,13 @@ public class CodeGenerator {
 	public String arithmetic(Arithmetic e, Type type) {
 		StringBuilder code = new StringBuilder();
 		code.append(e.getLeft().getCode());
+		if (e.getLeft().getType() instanceof CharType && e.getRight().getType() instanceof CharType) {
+			appendMAPLInstruction("b2i", code);
+		}
 		code.append(e.getRight().getCode());
+		if (e.getRight().getType() instanceof CharType && e.getLeft().getType() instanceof CharType) {
+			appendMAPLInstruction("b2i", code);
+		}
 		String operator = getMAPLOperator(e.getOperator()) + type.getSuffix();
 		appendMAPLInstruction(operator, code);
 		return code.toString();
@@ -146,6 +153,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getLeft().getLine(), code);
+		// We write a comment
+		writeMAPLComment("Assignment", code);
 		code.append(e.getLeft().getCode());
 		code.append(e.getRight().getCode());
 		String storeSuffix = "store" + e.getLeft().getType().getSuffix();
@@ -200,6 +209,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getBody().getLine(), code);
+		// We write a comment
+		writeMAPLComment("Read Statement", code);
 		code.append(e.getBody().getCode());
 		// We perform an input operation in MAPL
 		String inSuffix = "in" + e.getBody().getType().getSuffix();
@@ -214,6 +225,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getBody().getLine(), code);
+		// We write a comment
+		writeMAPLComment("Write Statement", code);
 		code.append(e.getBody().getCode());
 		// We perform an output operation in MAPL
 		String outSuffix = "out" + e.getBody().getType().getSuffix();
@@ -248,6 +261,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getCondition().getLine(), code);
+		// We write a comment
+		writeMAPLComment("While Statement", code);
 		int labelNumber = getLabels(2);
 		// We create the first label
 		String firstLabel = "label" + labelNumber + ":";
@@ -279,6 +294,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getCondition().getLine(), code);
+		// We write a comment
+		writeMAPLComment("If Statement", code);
 		int labelNumber = getLabels(2);
 		// We append the value of the condition
 		code.append(e.getCondition().getCode());
@@ -372,6 +389,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getLine(), code);
+		// We write a comment
+		writeMAPLComment("Invocation Statement", code);
 		// We append the value of the invocation
 		code.append(invocationExp(e, valueCGVisitor, param));
 		// We check if the function returns something
@@ -386,6 +405,8 @@ public class CodeGenerator {
 		StringBuilder code = new StringBuilder();
 		// We write the line in MAPL
 		writeMAPLLine(e.getBody().getLine(), code);
+		// We write a comment
+		writeMAPLComment("Return Statement", code);
 		// We append the value of the body
 		code.append(e.getBody().getCode());
 		// We get the function type of the active function
