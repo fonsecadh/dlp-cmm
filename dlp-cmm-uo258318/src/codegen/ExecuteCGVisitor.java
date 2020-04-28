@@ -129,7 +129,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Definition, Void> {
 	 * execute[[Invocation: statement -> expression1 expression2*]] =
 	 * 		expression2*.foreach(p -> value[[p]])
 	 * 		<call > expression1.name
-	 * 		if (expression1.type.returnType instanceof VoidType) {
+	 * 		if (!(expression1.type.returnType instanceof VoidType)) {
 	 * 			<pop> expression1.type.returnType.suffix
 	 * 		}
 	 */

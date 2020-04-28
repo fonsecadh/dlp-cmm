@@ -115,6 +115,9 @@ public class CodeGenerator {
 
 	public String cast(Cast e) {
 		StringBuilder code = new StringBuilder();
+		// We append the value of the body
+		code.append(e.getOperand().getCode());
+		// We add the cast instruction
 		String[] castInstructions = e.getOperand().getType().convertTo(e.getCastType());
 		for (String instr : castInstructions) {
 			appendMAPLInstruction(instr, code);
@@ -164,6 +167,8 @@ public class CodeGenerator {
 
 	public String functionDefinition(FuncDefinition e, ExecuteCGVisitor executeCGVisitor, Definition param) {
 		StringBuilder code = new StringBuilder();
+		// We write the line in MAPL
+		writeMAPLLine(e.getLine(), code);
 		// We get the function type
 		FunctionType funcType = (FunctionType) e.getType();
 		// We set the name of the function
@@ -172,7 +177,7 @@ public class CodeGenerator {
 		// We process the parameters.
 		writeMAPLComment("Parameters", code);
 		funcType.getParams().forEach(p -> {
-			String paramComment = p.getType().getName() + " " + e.getName() + " (offset " + e.getOffset() + ")";
+			String paramComment = p.getType().getName() + " " + p.getName() + " (offset " + p.getOffset() + ")";
 			writeMAPLComment(paramComment, code);
 		});
 		// We process the local variables
@@ -394,7 +399,7 @@ public class CodeGenerator {
 		// We append the value of the invocation
 		code.append(invocationExp(e, valueCGVisitor, param));
 		// We check if the function returns something
-		if (((FunctionType) e.getVariable().getType()).getReturnType() instanceof VoidType) {
+		if (!(((FunctionType) e.getVariable().getType()).getReturnType() instanceof VoidType)) {
 			String popSuffix = "pop" + ((FunctionType) e.getVariable().getType()).getReturnType().getSuffix();
 			appendMAPLInstruction(popSuffix, code);
 		}
