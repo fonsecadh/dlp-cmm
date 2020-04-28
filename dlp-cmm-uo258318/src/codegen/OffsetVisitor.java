@@ -56,7 +56,7 @@ public class OffsetVisitor extends AbstractVisitor<Boolean, Void> {
 		} else {
 			// Dynamic stack-based data have decreasing memory addresses.
 			if (isAParameter) { // If it is a parameter
-				e.setOffset(-localParamOffset);
+				e.setOffset(localParamOffset);
 				localParamOffset += e.getType().numberOfBytes();
 			} else { // If it is a local variable
 				localVarOffset += e.getType().numberOfBytes();

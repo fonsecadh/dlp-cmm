@@ -16,8 +16,8 @@
 #line 14
 	f:
 	' * Parameters
-	' * Real r (offset -4)
-	' * Int e (offset -8)
+	' * Real r (offset 6)
+	' * Int e (offset 4)
 	' * Local Variables
 	' * Real real (offset -4)
 	' * Char c (offset -5)
@@ -40,12 +40,12 @@
 	i2f
 	addf
 	push bp
-	pushi -4
+	pushi 6
 	addi
 	loadf
 	addf
 	push bp
-	pushi -8
+	pushi 4
 	addi
 	loadi
 	i2f
@@ -69,9 +69,9 @@
 #line 24
 	fill:
 	' * Parameters
-	' * Int row (offset -4)
-	' * Int value (offset -6)
-	' * Int increment (offset -8)
+	' * Int row (offset 8)
+	' * Int value (offset 6)
+	' * Int increment (offset 4)
 	' * Local Variables
 	' * Int i (offset -2)
 	' * Int inc (offset -4)
@@ -89,7 +89,7 @@
 	pushi -4
 	addi
 	push bp
-	pushi -8
+	pushi 4
 	addi
 	loadi
 	storei
@@ -107,7 +107,7 @@
 	' * Assignment
 	pusha 10
 	push bp
-	pushi -4
+	pushi 8
 	addi
 	loadi
 	pushi 0
@@ -121,7 +121,7 @@
 	muli
 	addi
 	push bp
-	pushi -6
+	pushi 6
 	addi
 	loadi
 	push bp
@@ -152,7 +152,7 @@
 	addi
 	loadi
 	push bp
-	pushi -8
+	pushi 4
 	addi
 	loadi
 	addi
@@ -163,7 +163,7 @@
 #line 35
 	show:
 	' * Parameters
-	' * Int row (offset -4)
+	' * Int row (offset 4)
 	' * Local Variables
 	' * Int i (offset -2)
 	enter 2
@@ -191,7 +191,7 @@
 #line 39
 	' * Write Statement
 	push bp
-	pushi -4
+	pushi 4
 	addi
 	loadi
 	outi
@@ -218,7 +218,7 @@
 	' * Write Statement
 	pusha 10
 	push bp
-	pushi -4
+	pushi 4
 	addi
 	loadi
 	pushi 0

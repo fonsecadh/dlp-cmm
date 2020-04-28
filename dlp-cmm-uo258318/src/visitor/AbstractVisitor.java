@@ -172,7 +172,10 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 	}
 	
 	public TR visit(FunctionType e, TP param) {
-		e.getParams().forEach(p -> p.accept(this, param));
+		// We traverse the parameters in reverse order
+		for (int i = e.getParams().size() - 1; i >= 0; i--) {
+			e.getParams().get(i).accept(this, param);
+		}
 		e.getReturnType().accept(this, param);
 		return null;
 	}
