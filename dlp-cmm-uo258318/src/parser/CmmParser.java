@@ -1157,19 +1157,19 @@ public class CmmParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(263);
+			setState(264);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__19) | (1L << T__33) | (1L << ID) | (1L << INT_CONSTANT) | (1L << REAL_CONSTANT) | (1L << CHAR_CONSTANT))) != 0)) {
-				{
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__19) | (1L << T__33) | (1L << ID) | (1L << INT_CONSTANT) | (1L << REAL_CONSTANT) | (1L << CHAR_CONSTANT))) != 0)) {
 				{
 				setState(253);
 				((ArgumentsContext)_localctx).e1 = expression(0);
 				 _localctx.ast.add(((ArgumentsContext)_localctx).e1.ast); 
-				setState(259);
+				setState(261);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__2) {
+				while (_la==T__2) {
+					{
 					{
 					setState(255);
 					match(T__2);
@@ -1177,14 +1177,14 @@ public class CmmParser extends Parser {
 					((ArgumentsContext)_localctx).e2 = expression(0);
 					 _localctx.ast.add(((ArgumentsContext)_localctx).e2.ast); 
 					}
+					}
+					setState(263);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
 				}
-
 				}
-				}
-				setState(265);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
 			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1445,14 +1445,14 @@ public class CmmParser extends Parser {
 		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7\u00db\n\7\3\7\3\7\3\7\3\7\3"+
 		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
 		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7\u00fb\n\7\f\7\16\7\u00fe\13\7\3\b"+
-		"\3\b\3\b\3\b\3\b\3\b\5\b\u0106\n\b\7\b\u0108\n\b\f\b\16\b\u010b\13\b\3"+
+		"\3\b\3\b\3\b\3\b\3\b\7\b\u0106\n\b\f\b\16\b\u0109\13\b\5\b\u010b\n\b\3"+
 		"\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\7\t\u0117\n\t\f\t\16\t\u011a\13"+
 		"\t\3\t\3\t\6\t\u011e\n\t\r\t\16\t\u011f\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3"+
 		"\t\3\t\5\t\u012b\n\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\7\t\u0136\n\t"+
 		"\f\t\16\t\u0139\13\t\3\t\7\t\u013c\n\t\f\t\16\t\u013f\13\t\3\t\2\4\f\20"+
 		"\n\2\4\6\b\n\f\16\20\2\6\3\2\30\32\4\2\26\26\33\33\3\2\34!\3\2\"#\2\u0164"+
 		"\2\22\3\2\2\2\4O\3\2\2\2\6Q\3\2\2\2\b\u009f\3\2\2\2\n\u00ae\3\2\2\2\f"+
-		"\u00da\3\2\2\2\16\u0109\3\2\2\2\20\u012a\3\2\2\2\22\26\b\2\1\2\23\24\5"+
+		"\u00da\3\2\2\2\16\u010a\3\2\2\2\20\u012a\3\2\2\2\22\26\b\2\1\2\23\24\5"+
 		"\4\3\2\24\25\b\2\1\2\25\27\3\2\2\2\26\23\3\2\2\2\27\30\3\2\2\2\30\26\3"+
 		"\2\2\2\30\31\3\2\2\2\31\32\3\2\2\2\32\33\7\2\2\3\33\34\b\2\1\2\34\3\3"+
 		"\2\2\2\35#\b\3\1\2\36\37\7\3\2\2\37$\b\3\1\2 !\5\20\t\2!\"\b\3\1\2\"$"+
@@ -1514,11 +1514,11 @@ public class CmmParser extends Parser {
 		"&\2\2\u00f9\u00fb\b\7\1\2\u00fa\u00dc\3\2\2\2\u00fa\u00e1\3\2\2\2\u00fa"+
 		"\u00e6\3\2\2\2\u00fa\u00eb\3\2\2\2\u00fa\u00f0\3\2\2\2\u00fa\u00f6\3\2"+
 		"\2\2\u00fb\u00fe\3\2\2\2\u00fc\u00fa\3\2\2\2\u00fc\u00fd\3\2\2\2\u00fd"+
-		"\r\3\2\2\2\u00fe\u00fc\3\2\2\2\u00ff\u0100\5\f\7\2\u0100\u0105\b\b\1\2"+
+		"\r\3\2\2\2\u00fe\u00fc\3\2\2\2\u00ff\u0100\5\f\7\2\u0100\u0107\b\b\1\2"+
 		"\u0101\u0102\7\5\2\2\u0102\u0103\5\f\7\2\u0103\u0104\b\b\1\2\u0104\u0106"+
-		"\3\2\2\2\u0105\u0101\3\2\2\2\u0105\u0106\3\2\2\2\u0106\u0108\3\2\2\2\u0107"+
-		"\u00ff\3\2\2\2\u0108\u010b\3\2\2\2\u0109\u0107\3\2\2\2\u0109\u010a\3\2"+
-		"\2\2\u010a\17\3\2\2\2\u010b\u0109\3\2\2\2\u010c\u010d\b\t\1\2\u010d\u010e"+
+		"\3\2\2\2\u0105\u0101\3\2\2\2\u0106\u0109\3\2\2\2\u0107\u0105\3\2\2\2\u0107"+
+		"\u0108\3\2\2\2\u0108\u010b\3\2\2\2\u0109\u0107\3\2\2\2\u010a\u00ff\3\2"+
+		"\2\2\u010a\u010b\3\2\2\2\u010b\17\3\2\2\2\u010c\u010d\b\t\1\2\u010d\u010e"+
 		"\7%\2\2\u010e\u010f\b\t\1\2\u010f\u011d\7\7\2\2\u0110\u0111\5\20\t\2\u0111"+
 		"\u0112\7&\2\2\u0112\u0118\b\t\1\2\u0113\u0114\7\5\2\2\u0114\u0115\7&\2"+
 		"\2\u0115\u0117\b\t\1\2\u0116\u0113\3\2\2\2\u0117\u011a\3\2\2\2\u0118\u0116"+
@@ -1536,7 +1536,7 @@ public class CmmParser extends Parser {
 		"\u0137\3\2\2\2\u013a\u013c\b\t\1\2\u013b\u012c\3\2\2\2\u013c\u013f\3\2"+
 		"\2\2\u013d\u013b\3\2\2\2\u013d\u013e\3\2\2\2\u013e\21\3\2\2\2\u013f\u013d"+
 		"\3\2\2\2\33\30#\62\65?GOYn\u0085\u0093\u009f\u00aa\u00ae\u00be\u00da\u00fa"+
-		"\u00fc\u0105\u0109\u0118\u011f\u012a\u0137\u013d";
+		"\u00fc\u0107\u010a\u0118\u011f\u012a\u0137\u013d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -333,6 +333,16 @@
 	pushi 10
 	lti
 	jz label5
+#line 61
+	' * Invocation Statement
+	push bp
+	pushi -2
+	addi
+	loadi
+	pusha 4
+	loadi
+	pushi 1
+	call fill
 #line 62
 	' * Invocation Statement
 	push bp

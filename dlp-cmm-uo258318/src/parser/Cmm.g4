@@ -249,7 +249,7 @@ expression returns [Expression ast]:
 /* ARGUMENTS */
 		  
 arguments returns [List<Expression> ast = new ArrayList<Expression>()]: 
-		 (e1=expression { $ast.add($e1.ast); } (',' e2=expression { $ast.add($e2.ast); })?)*
+		 (e1=expression { $ast.add($e1.ast); } (',' e2=expression { $ast.add($e2.ast); })*)?
 		 ;
 		 
 /* TYPES */
