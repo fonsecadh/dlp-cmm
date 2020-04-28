@@ -48,18 +48,19 @@ public class RealType extends AbstractType {
 	}
 
 	@Override
-	public Type assign(Type type, Statement e) {
+	public Type assign(Type type, Expression e) {
 		if (type instanceof RealType) {
 			return this;
+		} else {
+			return cast(type, e);
 		}
-		return super.assign(type, e);
 	}
 
 	@Override
 	public Type cast(Type type, Expression e) {
 		if (type instanceof IntType) {
 			return type;
-		} else if (type instanceof CharType) {
+		} else if (type instanceof RealType) {
 			return type;
 		} else {
 			return super.cast(type, e);

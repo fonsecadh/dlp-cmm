@@ -10,7 +10,7 @@ public interface Type extends ASTNode {
 	
 	// Type Checking
 	Type arithmetic(Type type, Expression e);
-	Type assign(Type type, Statement e);	
+	Type assign(Type type, Expression e);	
 	Type cast(Type type, Expression e);	
 	Type comparator(Type type, Expression e);
 	Type conditional(Type type, Expression e);	

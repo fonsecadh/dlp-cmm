@@ -62,7 +62,7 @@ public class ErrorType extends AbstractType {
 	}
 
 	@Override
-	public Type assign(Type type, Statement e) {
+	public Type assign(Type type, Expression e) {
 		return this;
 	}
 

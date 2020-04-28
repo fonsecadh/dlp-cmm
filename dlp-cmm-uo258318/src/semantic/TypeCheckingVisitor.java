@@ -143,7 +143,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 		}
 		Expression left = e.getLeft();
 		Expression right = e.getRight();
-		left.getType().assign(right.getType(), e);
+		right.getType().assign(left.getType(), e.getLeft());
 		return null;
 	}
 

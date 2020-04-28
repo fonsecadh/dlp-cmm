@@ -48,11 +48,12 @@ public class CharType extends AbstractType {
 	}
 
 	@Override
-	public Type assign(Type type, Statement e) {
+	public Type assign(Type type, Expression e) {
 		if (type instanceof CharType) {
 			return this;
+		} else {
+			return cast(type, e);
 		}
-		return super.assign(type, e);
 	}
 
 	@Override
@@ -60,6 +61,8 @@ public class CharType extends AbstractType {
 		if (type instanceof IntType) {
 			return type;
 		} else if (type instanceof RealType) {
+			return this;
+		} else if (type instanceof CharType) {
 			return type;
 		} else {
 			return super.cast(type, e);

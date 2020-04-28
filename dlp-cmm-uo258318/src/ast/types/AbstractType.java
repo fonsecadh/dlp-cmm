@@ -14,7 +14,7 @@ public abstract class AbstractType implements Type {
 	}
 
 	@Override
-	public Type assign(Type type, Statement e) {
+	public Type assign(Type type, Expression e) {
 		if (type instanceof ErrorType) {
 			return type;
 		}
@@ -26,7 +26,7 @@ public abstract class AbstractType implements Type {
 		if (type instanceof ErrorType) {
 			return type;
 		}
-		return new ErrorType(e.getLine(), e.getColumn(), "cast operator not supported by type " + type.getName());
+		return new ErrorType(e.getLine(), e.getColumn(), "cannot cast from type " + type.getName() + " to type " + this.getName());
 	}
 
 	@Override

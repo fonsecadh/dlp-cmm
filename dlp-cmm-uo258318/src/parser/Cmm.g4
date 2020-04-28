@@ -79,6 +79,39 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()]:
 			 		$e1.start.getCharPositionInLine() + 1,
 		 			$e1.ast, $e2.ast	 		
 	 		)); }	
+ 		 |  { 
+ 		 		List<Expression> lValues = new ArrayList<Expression>();
+ 		 	} e1=expression { lValues.add($e1.ast); } (',' e2=expression { lValues.add($e2.ast); })* 
+ 		 		'=' e3=expression ';'
+		 	{ 		 		
+		 		for (int i = 0; i < lValues.size(); i++) {
+		 			$ast.add(new Assignment(
+					 	$e1.start.getLine(),	
+				 		$e1.start.getCharPositionInLine() + 1,
+			 			lValues.get(i), $e3.ast	 		
+	 				));
+		 		}
+		 		
+	 		}	
+ 		 |  { 
+ 		 		List<Expression> lValues = new ArrayList<Expression>(); 
+ 		 		List<Expression> theValues = new ArrayList<Expression>(); 
+ 		 	} e1=expression { lValues.add($e1.ast); } (',' e2=expression { lValues.add($e2.ast); })* 
+ 		 		'=' e3=expression { theValues.add($e3.ast); } (',' e4=expression { theValues.add($e4.ast); })* ';'
+		 	{ 
+		 		if (lValues.size() != theValues.size()) { 
+		 			new ErrorType($e1.start.getLine(), $e1.start.getCharPositionInLine() + 1, 
+		 			"there are not as many left values in the assignment as new values to be assigned");
+		 		} else {
+			 		for (int i = 0; i < lValues.size(); i++) {
+			 			$ast.add(new Assignment(
+						 	$e1.start.getLine(),	
+					 		$e1.start.getCharPositionInLine() + 1,
+				 			lValues.get(i), theValues.get(i)	 		
+		 				));
+			 		}
+		 		}
+	 		}	
 		 | iftkn='if' '(' expression ')' b1=block 
 		 	{ $ast.add(new IfStatement(
 		 			$iftkn.getLine(),
